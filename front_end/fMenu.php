@@ -14,12 +14,17 @@
 		public function displayMenu($menu_data, $type = 'display') {
 			if(is_null($type)) $type = 'display';
 			$displayer = hObjectPooler::getObject('dDisplayer');
-			$template_name = 'menu_display';
-			$slot_name = '__MENU_CONTENT__';
 			if ($type === 'display') {
-				$displayer -> getAndFillSlot($template_name, $slot_name, $menu_data);
+				$template_name = 'menu_display';
+				$slot_name = '__MENU_CONTENT__';
+				$displayer -> getAndFillSlot($template_name, $slot_name);
+				$template_name = 'menu_fill_content';
+				$slot_name = '__HEAD_CONTENT__';
+				$displayer -> getAndAppendSlot($template_name, $slot_name, $menu_data);
 			} else if ($type === 'replace') {
-				$displayer -> getAndReplaceSlot($template_name, $slot_name, $menu_data);
+				$var_name = 'menu_items';
+				$controller_id = 'angular_menu_controller';
+				$displayer -> replaceData($var_name, $menu_data, $controller_id);
 			}
 		}
 	}
