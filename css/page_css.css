@@ -1,0 +1,115 @@
+/** PAGE CSS **/
+
+@font-face {
+  font-family: 'audimat';
+
+  src: url('../fonts/AUdimat-Regular.otf');
+}
+
+.inline_block_display {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1
+}
+.section {
+	background-color: #e1e1e1;
+}
+.section .hero-unit {
+	padding: 16px;
+	margin-bottom: 7px;
+}
+.selection_body {
+	padding: 20px;
+}
+.selection_body .button-xlarge{
+	font-size: 160%;
+}
+.selection_body .pure-button{
+	margin:5px;
+}
+/** END **/
+
+/** Yahoo Pure CSS **/
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+	color: white;
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+	background: rgb(28, 184, 65); /* this is a green */
+}
+
+.button-error {
+	background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.button-warning {
+	background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.button-secondary {
+	background: rgb(66, 184, 221); /* this is a light blue */
+}
+/** END **/
+
+/** Glyphicons **/
+
+.menu_div {
+	position:fixed;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 25px;
+	background-color: #333;
+	overflow:hidden;
+}
+
+body {
+	padding-left: 25px;
+}
+
+.menu_div .menu_line_item {
+	width: 25px;
+	max-height: 26px;
+	clear: both;
+	overflow: hidden;
+	height: 26px;
+	border-top: 1px solid #393939;
+	border-bottom: 1px solid #0b0b0b;
+	color: #bbb;
+	cursor: pointer;
+}
+
+.menu_div .menu_text {
+	text-transform: uppercase;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	padding-left: 10px;
+	position:relative;
+	top:-2px;
+}
+
+.menu_div .menu {
+	font-size: 25px;
+	width: 25px;
+	height: 26px;
+	text-align: center;
+	display: inline-block;
+}
+
+.textured_bg {
+	background: #282828; /* Old browsers */
+	background: -moz-linear-gradient(top,  #282828 0%, #222222 21%, #282828 60%, #222222 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#282828), color-stop(21%,#222222), color-stop(60%,#282828), color-stop(100%,#222222)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #282828 0%,#222222 21%,#282828 60%,#222222 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #282828 0%,#222222 21%,#282828 60%,#222222 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #282828 0%,#222222 21%,#282828 60%,#222222 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #282828 0%,#222222 21%,#282828 60%,#222222 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#282828', endColorstr='#222222',GradientType=0 ); /* IE6-9 */
+
+}

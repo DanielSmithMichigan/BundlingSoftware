@@ -1,0 +1,186 @@
+/*
+ *
+ * new_boxs.css
+ * Simple css utilities for building responsive buttons
+ * Author: mrmrs
+ * License: MIT
+ *
+ *                */
+/* 
+
+  Base .new_box class 
+
+  Code:
+  <a href="#" class="new_box">Default button</a>
+
+*/
+.new_box, .new_box:link, .new_box:visited {
+  cursor: pointer;
+  border-radius: 0.3em;
+  border-style: solid;
+  border-width: 1px;
+  color: #111;
+  display: inline-block;
+  font-family: avenir, helvetica, arial, sans-serif;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5em;
+  padding: 1em 0.75em;
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-transition: color 0.4s, background-color 0.4s, border 0.4s;
+  transition: color 0.4s, background-color 0.4s, border 0.4s; }
+
+.new_box:hover, .new_box:focus {
+  color: #f06060;
+  border: 1px solid #f06060;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; }
+
+.new_box:active {
+  color: #f06060;
+  border: 1px solid #f06060;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; }
+
+/* 
+
+  Sizes 
+  
+  Small  = .new_box--s
+  Medium = .new_box--m
+  Large  = .new_box--l
+
+  Code:
+  <a href="#" class="new_box new_box--s">
+  <a href="#" class="new_box new_box--m">
+  <a href="#" class="new_box new_box--l">
+
+*/
+.new_box--s {
+  font-size: 12px; }
+
+.new_box--m {
+  font-size: 14px; }
+
+.new_box--l {
+  font-size: 20px;
+  border-radius: 0.25em !important; }
+
+/* 
+
+  Layout utility for responsive buttons 
+
+  Code:
+  <a href="#" class="new_box new_box--full">
+
+*/
+.new_box--full, .new_box--full:link {
+  border-radius: 0.25em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 100%; }
+
+/*
+
+  Skins
+
+  * Black & White
+  * Grays
+  * Colors
+
+  Code:
+  <a href="#" class="new_box new_box--black">
+  <a href="#" class="new_box new_box--white">
+  <a href="#" class="new_box new_box--gray">
+  <a href="#" class="new_box new_box--gray-dark">
+  <a href="#" class="new_box new_box--gray-border">
+  <a href="#" class="new_box new_box--blue">
+
+*/
+/* BLACK & WHITE */
+.new_box--black, .new_box--black:link, .new_box--black:visited {
+  color: #fff;
+  background-color: #000; }
+
+.new_box--black:hover, .new_box--black:focus {
+  color: #fff;
+  background-color: #777;
+  border-color: #777; }
+
+.new_box--black:active {
+  color: #fff;
+  background-color: #999;
+  border-color: #999; }
+
+.new_box--black:hover, .new_box--black:focus {
+  background-color: #444; }
+
+.new_box--black {
+  background-color: #000; }
+
+.new_box--gray:link, .new_box--gray:visited {
+  background-color: #f0f0f0;
+  border-color: #f0f0f0;
+  color: #555; }
+
+.new_box--gray:hover, .new_box--gray:focus {
+  background-color: #ddd;
+  border-color: #ddd;
+  color: #444; }
+
+.new_box--gray:active {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #444; }
+
+.new_box--gray-border:link, .new_box--gray-border:visited {
+  background-color: #fff;
+  border-color: #555;
+  border-width: 2px;
+  color: #555; }
+
+.new_box--gray-border:hover, .new_box--gray-border:focus {
+  background-color: #fff;
+  border-color: #ddd;
+  color: #777; }
+
+.new_box--gray-border:active {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #444; }
+
+.new_box--gray-dark:link, .new_box--gray-dark:visited {
+  background-color: #555;
+  color: #eee; }
+
+.new_box--gray-dark:hover, .new_box--gray-dark:focus {
+  background-color: #333;
+  border-color: #333;
+  color: #eee; }
+
+.new_box--gray-dark:active {
+  background-color: #777;
+  border-color: #777;
+  color: #eee; }
+
+/* BLUES */
+.new_box--blue:link, .new_box--blue:visited {
+  color: #fff;
+  background-color: #0074D9; }
+
+.new_box--blue:hover, .new_box--blue:focus {
+  color: #fff !important;
+  background-color: #0063aa;
+  border-color: #0063aa; }
+
+.new_box--blue:active {
+  color: #fff;
+  background-color: #001F3F;
+  border-color: #001F3F; }
+
+/* Keep it mobile-first and responsive */
+@media screen and (min-width: 32em) {
+  .new_box--full {
+    max-width: 16em !important; } }
