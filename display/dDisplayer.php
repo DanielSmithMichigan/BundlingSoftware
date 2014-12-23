@@ -17,16 +17,27 @@
 			ob_end_clean();
 			return $html;
 		}
-		public function buildReplaceCommand($html, $slot_name) {
+		public function buildReplaceSlotCommand($html, $slot_name) {
 			$command = array();
-			$command['action'] = 'replace';
+			$command['action'] = 'replace_html';
 			$command['slot_name'] = $slot_name;
 			$command['html'] = $html;
 			return $command;
 		}
+		public function buildReplaceDataCommand($var_name, $var_data, $controller_id) {
+			$command = array();
+			$command['action'] = 'replace_data';
+			$command['var_name'] = $var_name;
+			$command['var_data'] = $var_data;
+			$command['controller_id'] = $controller_id;
+			return $command;
+		}
 		public function getAndReplaceSlot($template_name, $slot_name, $local_variables = array()) {
 			$html = $this->getTemplate($template_name, $local_variables);
-			$this->commands[] = $this->buildReplaceCommand($html, $slot_name);
+			$this->commands[] = $this->buildReplaceSlotCommand($html, $slot_name);
+		}
+		public function replaceData($var_name, $var_data, $controller_id) {
+			$this->commands[] = $this->buildReplaceDataCommand($var_name, $var_data, $controller_id);
 		}
 		public function getCommands () {
 			return $this->commands;

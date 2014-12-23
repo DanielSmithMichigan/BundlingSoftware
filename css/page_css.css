@@ -84,6 +84,10 @@ body {
 	cursor: pointer;
 }
 
+.menu_div.expanded .menu_line_item {
+	width: 250px;
+}
+
 .menu_div .menu_text {
 	text-transform: uppercase;
 	font-size: 14px;
