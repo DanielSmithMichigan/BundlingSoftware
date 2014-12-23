@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	var responder_obj = new responder();
 	$('.user_selector').click(function() {
 		var user_no = $(this).children('.user_no').val();
 		var send_data = {};
@@ -11,6 +10,7 @@ $(document).ready(function() {
 			dataType:'json',
 			data: send_data,
 			success: function(responses) {
+				var responder_obj = new responder();
 				responder_obj.catchResponse(responses);
 			}
 		});
@@ -21,14 +21,11 @@ $(document).ready(function() {
 });
 
 function slideMenuIn(slideAmount) {
-	if (typeof slideAmount === 'undefined') slideAmount = '250px';
+	if (typeof slideAmount === 'undefined') slideAmount = '140px';
 	var body = $('body');
-	var menu_div = $('.menu_div');
 	var menu_and_items = $('.menu_div, .menu_div .menu_line_item');
 	body.animate({paddingLeft: slideAmount},'slow');
-	menu_and_items.animate({width: slideAmount},'slow', function() {
-		menu_div.addClass('expanded');
-	});
+	menu_and_items.animate({width: slideAmount},'slow');
 	$('.menu_div .expand_menu').hide();
 	var menu_expander = $('.menu_div .menu_expander');
 	$('.menu_div .menu_expander').off('click');
@@ -40,12 +37,10 @@ function slideMenuIn(slideAmount) {
 function slideMenuOut(slideAmount) {
 	if (typeof slideAmount === 'undefined') slideAmount = '25px';
 	var body = $('body');
-	var menu_div = $('.menu_div');
 	var menu_and_items = $('.menu_div, .menu_div .menu_line_item');
 	body.animate({paddingLeft: slideAmount},'slow');
 	menu_and_items.animate({width: slideAmount},'slow', function() {
 		$('.menu_div .expand_menu').show();
-		menu_div.removeClass('expanded');
 	});
 	var menu_expander = $('.menu_div .menu_expander');
 	$('.menu_div .menu_expander').off('click');
