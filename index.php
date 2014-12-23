@@ -1,6 +1,7 @@
 <?php
 	require('auto_loader.php');
 	require('debug.php');
+	session_start();
 	bDatabase::connect();
 	$start = microtime(true);
 	

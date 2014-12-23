@@ -2,6 +2,7 @@
 	class bUser {
 		public $user_id = false;
 		public function __construct () {
+			$this->maintainIdentity();
 		}
 		public function maintainIdentity() {
 			$found_user = false;
@@ -38,7 +39,10 @@
 			return $user_id;
 		}
 		public function setSession($user_id) {
-			$_SESSION['user_id'] = $user_id;
+			if (!isset($_SESSION['user'])) {
+				$_SESSION['user'] = array();
+			}
+			$_SESSION['user']['user_id'] = $user_id;
 		}
 		public function setCookie($user_id) {
 			$expire_time = time()+60*60*24*30;
