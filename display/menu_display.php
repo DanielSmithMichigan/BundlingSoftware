@@ -3,7 +3,7 @@
 		<span class="menu expand_menu typcn typcn-arrow-maximise"></span>
 		<span class="menu contract_menu typcn typcn-arrow-minimise"></span>
 		<div class="menu_text inline_block_display">
-			Minimize
+			Hide Menu
 		</div>
 	</div>
 	<div>
