@@ -62,6 +62,7 @@
 			echo $this->stored_html;
 		}
 		public function performCommands() {
+			asd(json_encode($this->commands));
 			echo json_encode($this->commands);
 		}
 		public function getDisplay() {

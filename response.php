@@ -1,7 +1,6 @@
 <?php
 	require('auto_loader.php');
 	require('debug.php');
-	session_start();
 	bDatabase::connect();
 	
 	$displayer = hObjectPooler::getObject('dDisplayer');
