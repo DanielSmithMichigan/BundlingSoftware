@@ -15,11 +15,12 @@
 
 */
 .new_box, .new_box:link, .new_box:visited {
+	margin: 4px;
   cursor: pointer;
   border-radius: 0.3em;
   border-style: solid;
   border-width: 1px;
-  color: #111;
+  color: #eee;
   display: inline-block;
   font-family: avenir, helvetica, arial, sans-serif;
   letter-spacing: 0.15em;

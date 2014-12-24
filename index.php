@@ -8,12 +8,17 @@
 	
 	
 	$displayer = hObjectPooler::getObject('dDisplayer');
-	$user_display = hObjectPooler::getObject('fUser');
+	$backend_user = hObjectPooler::getObject('bUser');
 	$menu = hObjectPooler::getObject('fMenu');
 	$permissions_obj = hObjectPooler::getObject('bPermission');
 	$displayer -> getAndBeginPage('page_frame');
-	$displayer -> getAndFillSlot('top_bar', '__PAGE_CONTENT__');
-	$user_display -> getAndDisplayLogin();
+	
+	if ($backend_user->checkUserIdentified() === true) {
+		$menu->getAndDisplayFrontMenu();
+	} else {
+		$user_display = hObjectPooler::getObject('fUser');
+		$user_display -> getAndDisplayLogin();
+	}
 	
 	
 	$menu -> getAndDisplayMenu();

@@ -1,5 +1,10 @@
 /** PAGE CSS **/
 
+body {
+	background-color: #111;
+	color: white;
+}
+
 @font-face {
   font-family: 'audimat';
 
@@ -12,14 +17,10 @@
 	*zoom: 1
 }
 .section {
-	background-color: #e1e1e1;
+	background-color: #222;
 }
 .section .hero-unit {
 	padding: 16px;
-	margin-bottom: 7px;
-}
-.selection_body {
-	padding: 20px;
 }
 .selection_body .button-xlarge{
 	font-size: 160%;
@@ -116,4 +117,24 @@ body {
 	background: linear-gradient(to bottom,  #282828 0%,#222222 21%,#282828 60%,#222222 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#282828', endColorstr='#222222',GradientType=0 ); /* IE6-9 */
 
+}
+
+.__PAGE_CONTENT__ {
+	height: 100%;
+}
+
+.menu_front_div .menu_box_item {
+	margin: 8px;
+	width: 100px;
+	height: 80px;
+	padding: 10px 0px;
+	background-color: #3a3a3a;
+	border: 1px solid #3d3d3d;
+	text-align: center;
+	font-size: 15pt;
+	cursor: pointer;
+}
+
+.menu_front_div .front_menu.typcn {
+	font-size: 25pt;
 }

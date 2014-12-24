@@ -11,6 +11,7 @@
 		}
 		public function displayLogin($users) {
 			$displayer = hObjectPooler::getObject('dDisplayer');
+			$displayer -> getAndFillSlot('top_bar', '__PAGE_CONTENT__');
 			$template_name = 'login_screen';
 			$slot_name = '__TOP_SECTION__';
 			$displayer -> getAndFillSlot($template_name, $slot_name);

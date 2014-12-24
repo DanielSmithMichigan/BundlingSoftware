@@ -29,6 +29,7 @@
 		}
 		public function getAndDisplayFrontMenu($type = null) {
 			$menu_data = $this->verifyMenuData();
+			$this->displayFrontMenu($menu_data, $type);
 		}
 		public function getAndDisplayMenu($type = null) {
 			$menu_data = $this->verifyMenuData();
@@ -47,6 +48,26 @@
 				$slot_name = '__MENU_CONTENT__';
 				$displayer -> getAndFillSlot($template_name, $slot_name);
 				$template_name = 'menu_fill_content';
+				$slot_name = '__HEAD_CONTENT__';
+				$displayer -> getAndAppendSlot($template_name, $slot_name, $menu_data);
+			} else if ($type === 'replace') {
+				$var_name = 'menu_items';
+				$controller_id = 'angular_menu_controller';
+				$displayer -> replaceData($var_name, $menu_data, $controller_id);
+			}
+		}
+		public function displayFrontMenu($menu_data, $type = 'display') {
+			if(is_null($type)) $type = 'display';
+			$displayer = hObjectPooler::getObject('dDisplayer');
+			if ($type === 'display') {
+				$displayer -> getAndFillSlot('top_bar', '__PAGE_CONTENT__');
+				$template_name = 'what_do_you_want_to_do';
+				$slot_name = '__TOP_SECTION__';
+				$displayer -> getAndFillSlot($template_name, $slot_name);
+				$template_name = 'menu_front_display';
+				$slot_name = '__BOTTOM_SECTION__';
+				$displayer -> getAndFillSlot($template_name, $slot_name);
+				$template_name = 'menu_fill_front';
 				$slot_name = '__HEAD_CONTENT__';
 				$displayer -> getAndAppendSlot($template_name, $slot_name, $menu_data);
 			} else if ($type === 'replace') {
