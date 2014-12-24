@@ -5,6 +5,8 @@
 	bDatabase::connect();
 	$start = microtime(true);
 	
+	
+	
 	$displayer = hObjectPooler::getObject('dDisplayer');
 	$user_display = hObjectPooler::getObject('fUser');
 	$menu = hObjectPooler::getObject('fMenu');
@@ -12,6 +14,7 @@
 	$displayer -> getAndBeginPage('page_frame');
 	$displayer -> getAndFillSlot('top_bar', '__PAGE_CONTENT__');
 	$user_display -> getAndDisplayLogin();
+	
 	
 	$menu -> getAndDisplayMenu();
 	$displayer->performDisplay();
