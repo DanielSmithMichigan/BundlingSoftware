@@ -35,13 +35,15 @@
   color: #f06060;
   border: 1px solid #f06060;
   -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
-  transition: background-color 0.3s, color 0.3s, border 0.3s; }
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
 
 .new_box:active {
   color: #f06060;
   border: 1px solid #f06060;
   -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
-  transition: background-color 0.3s, color 0.3s, border 0.3s; }
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
 
 /* 
 

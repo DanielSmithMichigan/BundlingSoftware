@@ -15,6 +15,7 @@
 		$user -> performLogin($_POST);
 		$permissions -> getPermissions();
 		$menu -> getAndDisplayMenu('replace');
+		$menu -> getAndDisplayFrontMenu('replace');
 	}
 	
 	$displayer->performCommands();

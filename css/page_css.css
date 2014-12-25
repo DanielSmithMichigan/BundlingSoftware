@@ -85,6 +85,18 @@ body {
 	cursor: pointer;
 }
 
+.menu_div .menu_line_item:hover,.menu_div .menu_line_item:focus {
+  color: #f06060;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
+
+.menu_div .menu_line_item:hover:active {
+  color: #f06060;
+  -webkit-transition: background-color 0.3s, color 0.3s, border 0.3s;
+  transition: background-color 0.3s, color 0.3s, border 0.3s; 
+}
+
 .menu_div.expanded .menu_line_item {
 	width: 250px;
 }
