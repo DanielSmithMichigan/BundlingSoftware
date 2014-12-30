@@ -1,0 +1,4 @@
+part_columns=part_num,brand,part_description,price;
+part_column_names=Part Number,Brand,Part Description,Price;
+part_column_filters=appliance,brand,part_type;
+part_column_filter_names=Appliance,Brand,System

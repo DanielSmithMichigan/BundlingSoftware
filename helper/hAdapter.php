@@ -10,10 +10,19 @@
 		public static function adapt($adapters, $content) {
 			$output = array();
 			foreach($adapters as $adapter) {
-				$source = $adapter['source'];
 				$target = $adapter['target'];
-				$source_content = hPathFollower::followPathSlash($source, $content);
+				$source_content = self::getSourceContent($adapter, $content);
 				hPathFollower::setValue($target, $output, $source_content);
+			}
+			return $output;
+		}
+		public static function getSourceContent($adapter, $content) {
+			$output = false;
+			if (isset($adapter['source'])) {
+				$source = $adapter['source'];
+				$output = hPathFollower::followPathSlash($source, $content);
+			} else if (isset($adapter['static'])) {
+				$output = $adapter['static'];
 			}
 			return $output;
 		}

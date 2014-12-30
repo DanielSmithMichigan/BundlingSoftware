@@ -1,1 +1,0 @@
-<h1 id="page_title">Select a User</h1>

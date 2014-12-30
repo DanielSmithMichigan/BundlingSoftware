@@ -3,14 +3,15 @@
 	require('debug.php');
 	session_start();
 	bDatabase::connect();
+	hConfig::getConfiguration();
 	$start = microtime(true);
 	
+	// initialize all front end objects
+	$menu = hObjectPooler::getObject('fMenu');
 	
 	
 	$displayer = hObjectPooler::getObject('dDisplayer');
 	$backend_user = hObjectPooler::getObject('bUser');
-	$menu = hObjectPooler::getObject('fMenu');
-	$permissions_obj = hObjectPooler::getObject('bPermission');
 	$displayer -> getAndBeginPage('page_frame');
 	
 	if ($backend_user->checkUserIdentified() === true) {
@@ -20,10 +21,9 @@
 		$user_display -> getAndDisplayLogin();
 	}
 	
-	
 	$menu -> getAndDisplayMenu();
 	$displayer->performDisplay();
 	$time_elapsed_us = microtime(true) - $start;
-	echo $time_elapsed_us;
+	//echo $time_elapsed_us;
 	bDatabase::disconnect();
 ?>

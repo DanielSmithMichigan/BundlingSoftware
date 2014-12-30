@@ -4,6 +4,9 @@
 		public function __construct () {
 			$this->maintainIdentity();
 		}
+		public function getUserNo() {
+			return $this->user_id;
+		}
 		public function maintainIdentity() {
 			$found_user = false;
 			$found_user = $this->checkUserIdentified();

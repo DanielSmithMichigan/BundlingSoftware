@@ -2,6 +2,7 @@
 	class dDisplayer {
 		public $stored_html = '';
 		public $commands = array();
+		public $interfaces = array();
 		public function getTemplate($template_name, $local_variables = array(), $slot_name = false) {
 			ob_start();
 			$full_page_name = $template_name . '.php';
@@ -36,7 +37,7 @@
 			$html = $this->getTemplate($template_name, $local_variables);
 			$this->commands[] = $this->buildReplaceSlotCommand($html, $slot_name);
 		}
-		public function replaceData($var_name, $var_data, $controller_id) {
+		public function replaceData($var_name, $var_data, $controller_id = 'frontController') {
 			$this->commands[] = $this->buildReplaceDataCommand($var_name, $var_data, $controller_id);
 		}
 		public function getCommands () {

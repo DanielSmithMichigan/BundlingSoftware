@@ -8,7 +8,7 @@
 			$user_obj = hObjectPooler::getObject('bUser');
 			if ($user_obj->checkUserIdentified()) {
 				$this->available_permissions['menu'] = array();
-				$this->available_permissions['menu']['create_bundle'] = true;
+				$this->available_permissions['menu']['create_bundles'] = true;
 			} else {
 				$this->available_permissions['menu'] = array();
 				$this->available_permissions['menu']['user_login'] = true;

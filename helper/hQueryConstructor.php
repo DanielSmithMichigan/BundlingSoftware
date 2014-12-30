@@ -21,6 +21,7 @@
 			if ($query === false) {
 				$output = false;
 				asd($connection->error);
+				asd($sql);
 			} else {
 				if ($bind_param->hasBindings()) {
 					call_user_func_array(array($query, 'bind_param'), $bind_param->get());

@@ -26,4 +26,11 @@ function responder() {
 			$scope[var_name] = var_data;
 		});
 	};
+	this.performAngularHTMLReplace = function(response) {
+		var html = response.html;
+		var slot_name = response.slot_name;
+		var element_selector = '.' + slot_name;
+		var controller_id = response.controller_id;
+		$(element_selector).html(html);
+	}
 }

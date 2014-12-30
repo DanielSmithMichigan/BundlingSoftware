@@ -5,52 +5,57 @@ $(document).ready(function() {
 		var send_data = {};
 		send_data.action = 'login';
 		send_data.user_no = user_no;
-		$.ajax({
-			type: 'POST',
-			url: 'response.php',
-			dataType:'json',
-			data: send_data,
-			success: function(responses) {
-				responder_obj.catchResponse(responses);
-			}
-		});
+		sendAjax(send_data, responder_obj);
 	});
-	$('.menu_div .menu_expander').click(function() {
-		slideMenuIn();
+	$(document).on("click", '.create_bundles', function() {
+		var send_data = {};
+		send_data.action = 'create_bundles';
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on("click", '.add_part', function() {
+		var send_data = {};
+		send_data.action = 'add_part';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.load_menu', function() {
+		var send_data = {};
+		send_data.action = 'load_menu';
+		sendAjax(send_data, responder_obj);
+	});
+	
+	$(document).on('click', '.alter_title li a', function() {
+		var clicked_elem = jQuery(this);
+		var owner = clicked_elem.parents('.alter_title');
+		var title = owner.data('title');
+		var new_html = title;
+		if (!clicked_elem.hasClass('clr')) {
+			new_html += ': ' + clicked_elem.html();
+		} 
+		owner.find('.change_me').html(new_html);
 	});
 });
 
-function slideMenuIn(slideAmount) {
-	if (typeof slideAmount === 'undefined') slideAmount = '250px';
-	var body = $('body');
-	var menu_div = $('.menu_div');
-	var menu_and_items = $('.menu_div, .menu_div .menu_line_item');
-	body.animate({paddingLeft: slideAmount},'slow');
-	menu_and_items.animate({width: slideAmount},'slow', function() {
-		menu_div.addClass('expanded');
-	});
-	$('.menu_div .expand_menu').hide();
-	var menu_expander = $('.menu_div .menu_expander');
-	$('.menu_div .menu_expander').off('click');
-	$('.menu_div .menu_expander').click(function() {
-		slideMenuOut();
+function sendAjax(send_data, responder_obj) {
+	$.ajax({
+		type: 'POST',
+		url: 'response.php',
+		dataType:'json',
+		data: send_data,
+		success: function(responses) {
+			responder_obj.catchResponse(responses);
+		}
 	});
 }
 
-function slideMenuOut(slideAmount) {
-	if (typeof slideAmount === 'undefined') slideAmount = '25px';
-	var body = $('body');
-	var menu_div = $('.menu_div');
-	var menu_and_items = $('.menu_div, .menu_div .menu_line_item');
-	body.animate({paddingLeft: slideAmount},'slow');
-	menu_and_items.animate({width: slideAmount},'slow', function() {
-		$('.menu_div .expand_menu').show();
-		menu_div.removeClass('expanded');
+function getParams(elem) {
+	elem = $(elem);
+	var params = {};
+	elem.find('.params').children('input').each(function(){
+		var input = $(this);
+		var param_name = input.attr('name');
+		var param_value = input.val()
+		params[param_name] = param_value;
 	});
-	var menu_expander = $('.menu_div .menu_expander');
-	$('.menu_div .menu_expander').off('click');
-	$('.menu_div .menu_expander').click(function() {
-		slideMenuIn();
-	});
-	
+	return params;
 }

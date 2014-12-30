@@ -1,5 +1,5 @@
 <?php
-	class fMenu {
+	class fMenu extends fInterface {
 		public $menu_path = 'fMenu/menu_data';
 		public function getMenuFromCache() {
 			$path = $this->menu_path;
@@ -43,48 +43,26 @@
 		public function displayMenu($menu_data, $type = 'display') {
 			if(is_null($type)) $type = 'display';
 			$displayer = hObjectPooler::getObject('dDisplayer');
+			$local_variables = array();
+			$local_variables['menu'] = $menu_data;
+			$local_variables['curr_action'] = hCache::getValueFromInternal('action');
+			$template_name = 'menu_display';
+			$slot_name = '__MENU_CONTENT__';
 			if ($type === 'display') {
-				$template_name = 'menu_display';
-				$slot_name = '__MENU_CONTENT__';
-				$displayer -> getAndFillSlot($template_name, $slot_name);
-				$template_name = 'menu_fill_content';
-				$slot_name = '__HEAD_CONTENT__';
-				$displayer -> getAndAppendSlot($template_name, $slot_name, $menu_data);
+				$displayer -> getAndFillSlot($template_name, $slot_name, $local_variables);
 			} else if ($type === 'replace') {
-				$var_name = 'menu_items';
-				$controller_id = 'angular_menu_controller';
-				$displayer -> replaceData($var_name, $menu_data, $controller_id);
+				$displayer -> getAndReplaceSlot($template_name, $slot_name, $local_variables);
 			}
 		}
 		public function displayFrontMenu($menu_data, $type = 'display') {
 			if(is_null($type)) $type = 'display';
 			$displayer = hObjectPooler::getObject('dDisplayer');
+			$template_name = 'menu_front_display';
+			$slot_name = '__PAGE_MAIN__';
 			if ($type === 'display') {
-				$displayer -> getAndFillSlot('top_bar', '__PAGE_CONTENT__');
-				$template_name = 'what_do_you_want_to_do';
-				$slot_name = '__TOP_SECTION__';
-				$displayer -> getAndFillSlot($template_name, $slot_name);
-				$template_name = 'front_display';
-				$slot_name = '__BOTTOM_SECTION__';
-				$displayer -> getAndFillSlot($template_name, $slot_name);
-				$adapt_array = array();
-				$adapt_array[] = array('source' => 'glyphicon', 'target' => 'glyphicon');
-				$adapt_array[] = array('source' => 'menu_item_display', 'target' => 'item_display');
-				$adapt_array[] = array('source' => 'menu_item_name', 'target' => 'item_name');
-				$adapted_array = hAdapter::adaptEach($adapt_array, $menu_data);
-				$template_name = 'fill_front';
-				$slot_name = '__HEAD_CONTENT__';
-				$displayer -> getAndAppendSlot($template_name, $slot_name, $adapted_array);
+				$displayer -> getAndFillSlot($template_name, $slot_name, $menu_data);
 			} else if ($type === 'replace') {
-				$template_name = 'what_do_you_want_to_do';
-				$slot_name = '__TOP_SECTION__';
-				$displayer -> getAndReplaceSlot($template_name, $slot_name);
-				$template_name = 'menu_front_display';
-				$slot_name = '__BOTTOM_SECTION__';
-				$displayer -> getAndReplaceSlot($template_name, $slot_name);
-				$template_name = 'menu_fill_front';
-				$slot_name = '__HEAD_CONTENT__';
-				$displayer -> getAndAppendSlot($template_name, $slot_name, $menu_data);
+				$displayer -> getAndReplaceSlot($template_name, $slot_name, $menu_data);
 			}
 		}
 	}
