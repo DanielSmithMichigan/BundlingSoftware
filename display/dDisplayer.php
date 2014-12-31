@@ -33,39 +33,46 @@
 			$command['controller_id'] = $controller_id;
 			return $command;
 		}
+		public function addCommand($command) {
+			$this->commands[] = $command;
+		}
 		public function getAndReplaceSlot($template_name, $slot_name, $local_variables = array()) {
 			$html = $this->getTemplate($template_name, $local_variables);
-			$this->commands[] = $this->buildReplaceSlotCommand($html, $slot_name);
+			$command = $this->buildReplaceSlotCommand($html, $slot_name);
+			$this->addCommand($command);
 		}
 		public function replaceData($var_name, $var_data, $controller_id = 'frontController') {
-			$this->commands[] = $this->buildReplaceDataCommand($var_name, $var_data, $controller_id);
+			$command = $this->buildReplaceDataCommand($var_name, $var_data, $controller_id);
+			$this->addCommand($command);
 		}
 		public function getCommands () {
 			return $this->commands;
 		}
 		public function getAndFillSlot($template_name, $slot_name, $local_variables = array()) {
 			$html = $this->getTemplate($template_name, $local_variables, $slot_name);
-			$this->fillSlot($slot_name, $html);
+			$html = $this->fillSlot($slot_name, $html, $this->stored_html);
+			$this->replaceStoredHtml($html);
 		}
 		public function getAndBeginPage($template_name, $local_variables = array()) {
 			$html = $this->getTemplate($template_name, $local_variables);
-			$this->beginPage($html);
+			$this->replaceStoredHtml($html);
 		}
-		public function beginPage($html) {
+		public function replaceStoredHtml($html) {
 			$this->stored_html = $html;
 		}
-		public function fillSlot($slot_name, $new_html) {
+		public function fillSlot($slot_name, $new_html, $input_html) {
 			$replace_name = $this->getReplaceName($slot_name);
-			$this->stored_html = str_replace($replace_name, $new_html, $this->stored_html);
+			return(str_replace($replace_name, $new_html, $input_html));
 		}
 		public function getAndAppendSlot($template_name, $slot_name, $local_variables = array()) {
 			$html = $this->getTemplate($template_name, $local_variables, $slot_name);
-			$this->appendSlot($slot_name, $html);
+			$this->appendSlot($slot_name, $html, $this->stored_html);
 		}
-		public function appendSlot($slot_name, $html) {
+		public function appendSlot($slot_name, $html, $input_html) {
 			$replace_name = $this->getReplaceName($slot_name);
 			$html .= PHP_EOL.$replace_name;
-			$this->stored_html = str_replace($replace_name, $html, $this->stored_html);
+			$html = str_replace($replace_name, $html, $input_html);
+			$this->replaceStoredHtml($html);
 		}
 		public function getReplaceName($slot_name) {
 			return '<!-- '.$slot_name.' -->';

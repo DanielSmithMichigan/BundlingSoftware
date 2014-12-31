@@ -34,6 +34,12 @@ $(document).ready(function() {
 		} 
 		owner.find('.change_me').html(new_html);
 	});
+	$(document).on('click', '.filter_selector', function() {
+		var send_data = {};
+		send_data.action = 'add_filter';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
 });
 
 function sendAjax(send_data, responder_obj) {

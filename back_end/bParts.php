@@ -14,7 +14,11 @@
 				
 			if (isset($params['filters']) && is_array($params['filters'])) {
 				foreach($params['filters'] as $filter) {
-					$sql .= ' AND part.'.$filter['part_col'].' '.$filter['operator'].' '.$filter['value'].' ';
+					if (empty($filter['operator'])) {
+						$filter['operator'] = '=';
+					}
+					$sql .= ' AND part.'.$filter['part_col'].' '.$filter['operator'].' ? ';
+					$bind_param->addString($filter['value']);
 				}
 			}
 			
@@ -40,7 +44,11 @@
 				
 			if (isset($params['filters']) && is_array($params['filters'])) {
 				foreach($params['filters'] as $filter) {
-					$sql .= ' AND part.'.$filter['part_col'].' '.$filter['operator'].' '.$filter['value'].' ';
+					if (empty($filter['operator'])) {
+						$filter['operator'] = '=';
+					}
+					$sql .= ' AND part.'.$filter['part_col'].' '.$filter['operator'].' ? ';
+					$bind_param->addString($filter['value']);
 				}
 			}
 			

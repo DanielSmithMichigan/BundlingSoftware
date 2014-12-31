@@ -16,6 +16,7 @@
 		case 'login':
 			if ($action === 'login') {
 				$user -> performLogin($_POST);
+				$permissions->getPermissions();
 				$menu -> getAndDisplayFrontMenu('replace');
 			}
 		case 'load_menu':
@@ -31,6 +32,11 @@
 			if ($action === 'add_part') {
 				$fPartSelector = hObjectPooler::getObject('fPartSelector');
 				$fPartSelector->getAndDisplayFilteredPartsList($_POST['params']);
+			}
+		case 'add_filter':
+			if ($action === 'add_filter') {
+				$fPartSelector = hObjectPooler::getObject('fPartSelector');
+				$fPartSelector->getAndUpdateFilteredPartsList($_POST['params']);
 			}
 		default:
 			$menu -> getAndDisplayMenu('replace');
