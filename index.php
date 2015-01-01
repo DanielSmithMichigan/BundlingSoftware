@@ -12,6 +12,7 @@
 	
 	$displayer = hObjectPooler::getObject('dDisplayer');
 	$backend_user = hObjectPooler::getObject('bUser');
+	$fFooter = hObjectPooler::getObject('fFooter');
 	$displayer -> getAndBeginPage('page_frame');
 	
 	if ($backend_user->checkUserIdentified() === true) {
@@ -21,6 +22,7 @@
 		$user_display -> getAndDisplayLogin();
 	}
 	
+	$fFooter->displayFooter();
 	$menu -> getAndDisplayMenu();
 	$displayer->performDisplay();
 	$time_elapsed_us = microtime(true) - $start;

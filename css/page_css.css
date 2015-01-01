@@ -2,6 +2,9 @@
 /** END TEMPLATE **/
 
 /** GENERAL **/
+.params {
+	display: none;
+}
 
 .page_fill {
 	height: 97%;
@@ -47,3 +50,39 @@
 }
 
 /** END USERS **/
+/** ADD BODY AND FOOTER */
+	#static_footer {
+		width: 100%;
+		background-color: #1b1b1b;
+		height:1px; 
+		overflow: hidden;
+		padding: 5px;
+		display: none;
+		color: white;
+	}
+	#static_body {
+		height:100%;
+		overflow: auto;
+	}
+	#static_wrapper {
+		padding-bottom: 1px;
+		height: 100%;
+		position:absolute; 
+		top:0; 
+		bottom:0; 
+		left:0; 
+		right:0;
+	}
+/** END BODY AND FOOTER **/
+
+/** PARTS IN BUNDLES **/
+
+.bundled_part {
+	font-size: 9pt;
+}
+
+.bundled_part .typcn {
+	font-size: 10pt;
+}
+
+/** END PARTS IN BUNDLES **/

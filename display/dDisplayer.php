@@ -33,6 +33,12 @@
 			$command['controller_id'] = $controller_id;
 			return $command;
 		}
+		public function addGenericCommand($action, $properties = array()) {
+			$command = array();
+			$command['action'] = $action;
+			$command['properties'] = $properties;
+			$this->addCommand($command);
+		}
 		public function addCommand($command) {
 			$this->commands[] = $command;
 		}

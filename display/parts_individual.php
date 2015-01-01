@@ -14,7 +14,13 @@
 				</p>
 			<?php endforeach; ?>
 			<div class="text-center">
-				<button type="button" class="btn btn-primary">Add Part</button>
+				<button type="button" class="btn btn-primary add_part">
+					<div class="params">
+						<input type="hidden" name="bundle_no" class="bundle_no" value="<?php echo $local_variables['bundle_no']; ?>" />
+						<input type="hidden" name="part_no" class="part_no" value="<?php echo $part['part_no']; ?>" />
+					</div>
+					Add Part
+				</button>
 			</div>
 		</div>
 	</div>

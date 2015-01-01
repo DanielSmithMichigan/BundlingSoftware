@@ -6,7 +6,7 @@
 			</div>
 			<ul class="nav navbar-nav">
 				<li>
-					<a href="#" class="add_part">
+					<a href="#" class="add_parts">
 						<div class="params">
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
 						</div>
@@ -27,25 +27,33 @@
 						<?php echo $part_column; ?>
 					</th>
 				<?php endforeach; ?>
+				<th>
+					QTY
+				</th>
+				<th>
+					Price
+				</th>
 			</tr>
 			<?php foreach($bundle['parts'] as $part): ?>
 				<tr>
 				<?php foreach($local_variables['part_columns'] as $part_column): ?>
 					<td>
-						<?php if ($part_column === 'price'): ?>
-							<?php echo round($part[$part_column], 2); ?>
-						<?php else: ?>
-							<?php echo $part[$part_column]; ?>
-						<?php endif; ?>
+						<?php echo $part[$part_column]; ?>
 					</td>
 				<?php endforeach; ?>
+				<td>
+					<?php echo $part['qty']; ?>
+				</td>
+				<td>
+					<?php echo round($part['price'], 2); ?>
+				</td>
 				</tr>
 			<?php endforeach; ?>
 			<tr>
 				<th>
 					Total
 				</th>
-				<td colspan="<?php echo $local_variables['num_part_col'] - 2; ?>">
+				<td colspan="<?php echo $local_variables['num_part_col']; ?>">
 				
 				</td>
 				<th>

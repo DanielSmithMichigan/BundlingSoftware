@@ -14,6 +14,7 @@
 							<div class="params" style="display: none">
 								<input type="hidden" name="filter_key" value="<?php echo $filter_key; ?>" />
 								<input type="hidden" name="filter_distinct_value" value="<?php echo $filter_distinct_value; ?>" />
+								<input type="hidden" name="bundle_no" value="<?php echo $local_variables['bundle_no']; ?>" />
 							</div>
 							<?php echo $filter_distinct_value; ?>
 						</a>
@@ -34,3 +35,4 @@
 		</div>
 	</div>
 </div>
+<!-- __BUNDLE_PARTS__ -->

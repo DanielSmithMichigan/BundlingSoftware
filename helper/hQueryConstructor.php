@@ -14,7 +14,24 @@
 		public static function getSqlData() {
 			return self::$sql_data;
 		}
-		public static function executeStatement($sql, $bind_param) {
+		public static function markRecordsDeleted($table_name, $primary_key_column, $records) {
+			$bind_param = new hBindParam();
+			$sql = " update $table_name 
+				set deleted = true
+				where $primary_key_column IN (";
+			$first = true;
+			foreach($records as $record) {
+				if ($first === false) {
+					$sql .= ',';
+				}
+				$first = false;
+				$sql .= "?";
+				$bind_param->addNumber($record);
+			}
+			$sql .= ")";
+			self::executeStatement($sql, $bind_param, 'update');				
+		}
+		public static function executeStatement($sql, $bind_param, $mode = 'select') {
 			$output = array();
 			$connection = bDatabase::$conn;
 			$query = $connection->prepare($sql);
@@ -28,8 +45,12 @@
 				}
 				$query->execute();
 				$results = $query -> get_result();
-				while ($row = $results -> fetch_assoc()) {
-					$output[] = $row;
+				if ($mode === 'select') {
+					while ($row = $results -> fetch_assoc()) {
+						$output[] = $row;
+					}
+				} else if ($mode === 'insert' || $mode === 'update') {
+					$output = true;
 				}
 			}
 			return $output;

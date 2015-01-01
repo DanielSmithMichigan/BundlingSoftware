@@ -30,8 +30,22 @@
 			}
 		case 'add_part':
 			if ($action === 'add_part') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->handleAddPartResponse($_POST['params']);
+				$fPartSelector = hObjectPooler::getObject('fPartSelector');
+				$fPartSelector->getAndUpdateFooter($_POST['params']);
+			}
+		case 'add_parts':
+			if ($action === 'add_parts') {
 				$fPartSelector = hObjectPooler::getObject('fPartSelector');
 				$fPartSelector->getAndDisplayFilteredPartsList($_POST['params']);
+			}
+		case 'remove_part':
+			if ($action === 'remove_part') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->handleRemovePartResponse($_POST['params']);
+				$fPartSelector = hObjectPooler::getObject('fPartSelector');
+				$fPartSelector->getAndUpdateFooter($_POST['params']);
 			}
 		case 'add_filter':
 			if ($action === 'add_filter') {

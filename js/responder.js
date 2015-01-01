@@ -7,9 +7,15 @@ function responder() {
 				this.performHTMLReplace(response);
 			} else if (action === 'replace_data') {
 				this.performDataReplace(response);
+			} else if (action === 'show_footer') {
+				this.performShowFooter(response);
 			}
 		}
 	};
+	this.performShowFooter = function(response) {
+		var amount = response.properties.amount;
+		expandFooter(amount);
+	}
 	this.performHTMLReplace = function(response) {
 		var html = response.html;
 		var slot_name = response.slot_name;
