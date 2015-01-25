@@ -98,6 +98,7 @@ $(document).ready(function() {
 		sendAjax(send_data, responder_obj);
 	});
 	$(document).on('click', '.customer_view', function() {
+		hide_menu();
 		var send_data = {};
 		send_data.action = 'customer_view';
 		sendAjax(send_data, responder_obj);
@@ -109,14 +110,18 @@ $(document).ready(function() {
 		sendAjax(send_data, responder_obj);
 	});
 	$(document).on('click', '.hide_menu', function() {
-		$('.top_menu_shown').hide();
-		$('.top_menu_hidden').show();
+		hide_menu();
 	});
 	$(document).on('click', '.show_menu', function() {
 		$('.top_menu_shown').show();
 		$('.top_menu_hidden').hide();
 	});
 });
+
+function hide_menu() {
+	$('.top_menu_shown').hide();
+	$('.top_menu_hidden').show();
+}
 
 function expandFooter(amount) {
 	if (typeof amount === 'undefined') amount = '50';
