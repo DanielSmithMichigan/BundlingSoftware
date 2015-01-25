@@ -18,7 +18,12 @@ class hBindParam{
 	}
     
     public function get(){ 
-        return array_merge(array($this->types), $this->values); 
+		$arr = array();
+		$arr[] = $this->types;
+		foreach($this->values as &$value) {
+			$arr[] = $value;
+		}
+        return($arr); 
     } 
 	
 	public function bindAll($sql_data) {

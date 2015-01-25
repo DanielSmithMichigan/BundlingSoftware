@@ -1,46 +1,9 @@
-<div class="container">
-	<button type="button" class="btn btn-primary create_bundle">
-		New Bundle
-	</button>
-</div>
-<br />
 <?php foreach($local_variables['bundles'] as $bundle): ?>
 	<div class="panel panel-default">
 		<nav class="navbar navbar-default">
 			<div class="navbar-header">
 			  <span class="navbar-brand"><?php echo $bundle['bundle_name']; ?></span>
 			</div>
-			<ul class="nav navbar-nav">
-				<li>
-					<a href="#" class="add_parts">
-						<div class="params">
-							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
-						</div>
-						<span class="typcn typcn-plus"></span>
-						Add Part
-					</a>
-				</li>
-				<li>
-					<a href="#" class="duplicate_bundle">
-						<div class="params">
-							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
-						</div>
-						<span class="typcn typcn-tabs-outline"></span>
-						Duplicate
-					</a>
-				</li>
-			</ul>
-			<ul class="nav navbar-nav pull-right">
-				<li>
-					<a class="delete_bundle">
-						<div class="params">
-							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
-						</div>
-						<span class="typcn typcn-trash"></span>
-						Delete Bundle
-					</a>
-				</li>
-			</ul>
 		</nav>
 		<table class="table">
 			<tr>

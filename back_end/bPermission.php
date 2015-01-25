@@ -9,6 +9,7 @@
 			if ($user_obj->checkUserIdentified()) {
 				$this->available_permissions['menu'] = array();
 				$this->available_permissions['menu']['create_bundles'] = true;
+				$this->available_permissions['menu']['customer_view'] = true;
 			} else {
 				$this->available_permissions['menu'] = array();
 				$this->available_permissions['menu']['user_login'] = true;

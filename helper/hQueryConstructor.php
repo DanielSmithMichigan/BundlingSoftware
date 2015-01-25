@@ -37,8 +37,6 @@
 			$query = $connection->prepare($sql);
 			if ($query === false) {
 				$output = false;
-				asd($connection->error);
-				asd($sql);
 			} else {
 				if ($bind_param->hasBindings()) {
 					call_user_func_array(array($query, 'bind_param'), $bind_param->get());
@@ -49,8 +47,10 @@
 					while ($row = $results -> fetch_assoc()) {
 						$output[] = $row;
 					}
-				} else if ($mode === 'insert' || $mode === 'update') {
+				} else if ($mode === 'update') {
 					$output = true;
+				} else if ($mode === 'insert') {
+					$output = $connection -> insert_id;
 				}
 			}
 			return $output;

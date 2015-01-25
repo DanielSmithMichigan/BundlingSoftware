@@ -8,4 +8,12 @@
 		</li>
 	<?php endforeach; ?>
 </ul>
+<ul class="nav navbar-nav pull-right">
+	<li>
+		<a class="hide_menu">
+			<span class="typcn typcn-arrow-minimise"></span>
+			Hide
+		</a>
+	</li>
+</ul>
 

@@ -12,7 +12,7 @@
 			// Get Bundled Parts
 			$new_params = array();
 			$new_params['bundle_no'] = $bundle_no;
-			$bundled_parts = $bBundler->getBundles($new_params);
+			$bundled_parts = $bBundler->getBundlesWithParts($new_params);
 			$parts_list_params['bundled_parts'] = $bundled_parts;
 			
 			// Get All Parts
@@ -37,22 +37,21 @@
 			
 			$this->displayPartsList($parts_list_params);
 		}
-		public function getAndUpdateFilteredPartsList($params) {
-			$filter_key = $params['filter_key'];
-			$filter_value = $params['filter_distinct_value'];
-			$filter = array();
-			$filter['part_col'] = $filter_key;
-			$filter['value'] = $filter_value;
-			$params = array();
-			$params['filters'] = array();
-			$params['filters'][] = $filter;
+		public function getAndUpdateFilteredPartsList($params) {			
+			$new_params = array();
+			if (isset($params['filters'])) {
+				$new_params['filters'] = $params['filters'];
+			}
+			
 			$bParts = hObjectPooler::getObject('bParts');
-			$parts = $bParts->getParts($params);
+			$parts = $bParts->getParts($new_params);
+			
 			$parts_list_params = array();
 			$parts_list_params['parts'] = $parts;
 			$part_display_config = hConfig::getSettingPair('add_part_display_order', 'add_part_display_order_names');
 			$parts_list_params['part_display_config'] = $part_display_config;
 			$parts_list_params['bundle_no'] = $params['bundle_no'];
+			
 			$this->updatePartsList($parts_list_params);
 		}
 		public function displayPartsList($local_variables) {
@@ -79,14 +78,13 @@
 			$displayer->getAndReplaceSlot($template_name, $slot_name, $local_variables);
 		}
 		public function getAndUpdateFooter($params) {
-			asd($params);
 			$displayer = hObjectPooler::getObject('dDisplayer');
 			$bBundler = hObjectPooler::getObject('bBundler');
 			$parts_list_params = array();
 			$parts_list_params['bundle_no'] = $params['bundle_no'];
 			$new_params = array();
 			$new_params['bundle_no'] = $params['bundle_no'];
-			$bundled_parts = $bBundler->getBundles($new_params);
+			$bundled_parts = $bBundler->getBundlesWithParts($new_params);
 			$parts_list_params['bundled_parts'] = $bundled_parts;
 			
 			$action = 'show_footer';

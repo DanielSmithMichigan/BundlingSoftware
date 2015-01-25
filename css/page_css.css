@@ -2,6 +2,10 @@
 /** END TEMPLATE **/
 
 /** GENERAL **/
+.page_container {
+	clear: both;
+}
+
 .params {
 	display: none;
 }
@@ -33,6 +37,11 @@
 
 /** END GENERAL **/
 /** MENU **/
+
+.top_menu_hidden {
+	display: none;
+	clear: both;
+}
 
 .menu_option {
 	cursor: pointer;

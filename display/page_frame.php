@@ -13,17 +13,27 @@
 	<body>
 		<div id="static_wrapper">
 			<div id="static_body">
-				<nav class="navbar navbar-default">
-					<div class="container-fluid">
-					
-						<div class="navbar-header">
-							<a class="navbar-brand load_menu hide_footer" href="#">aaaBundler</a>
-						</div>
+				<div class="top_menu_shown">
+					<nav class="navbar navbar-default">
+						<div class="container-fluid">
 						
-						<!-- __MENU_CONTENT__ -->
-					</div>
-				</nav>
-				<!-- __PAGE_MAIN__ -->
+							<div class="navbar-header">
+								<a class="navbar-brand load_menu hide_footer" href="#">aaaBundler</a>
+							</div>
+							
+							<!-- __MENU_CONTENT__ -->
+						</div>
+					</nav>
+				</div>
+				<div class="top_menu_hidden pull-right">
+					<a class="show_menu">
+						<span class="typcn typcn-arrow-maximise"></span>
+						Show Menu
+					</a>
+				</div>
+				<div class="page_container">
+					<!-- __PAGE_MAIN__ -->
+				</div>
 			</div>
 			<div id="static_footer">
 				<!-- __PAGE_FOOTER__ -->

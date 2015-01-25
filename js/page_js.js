@@ -39,7 +39,7 @@ $(document).ready(function() {
 	
 	$(document).on('click', '.alter_title li a', function() {
 		var clicked_elem = jQuery(this);
-		var owner = clicked_elem.parents('.alter_title');
+		var owner = clicked_elem.closest('.alter_title');
 		var title = owner.data('title');
 		var new_html = title;
 		if (!clicked_elem.hasClass('clr')) {
@@ -49,12 +49,72 @@ $(document).ready(function() {
 	});
 	$(document).on('click', '.filter_selector', function() {
 		var send_data = {};
+		var filters = [];
+		var selected_class = 'selected';
+		var clr_class = 'clr';
+		var individual_filter_selector_element = ' a.filter_selector ';
+		var individual_filter_selector = ' ul.filter_menu li ' + individual_filter_selector_element;
+		
+		// remove selected from all selectors in this group
+		var filter_group = $(this).closest('.filter_group');
+		var all_filters_curr_group = filter_group.find(individual_filter_selector);
+		all_filters_curr_group.removeClass(selected_class);
+		
+		// add selected to the selected element in filter
+		var curr_filter = $(this).closest(individual_filter_selector_element)
+		curr_filter.addClass(selected_class);
+		
+		
+		// get filter data from all filter
+		var selected_filter_selector = ' a.filter_selector.selected ';
+		var individual_selected_filter = ' ul.filter_menu li ' + selected_filter_selector;
+		var all_selected_filters = $('.part_filters').find(individual_selected_filter);
+		all_selected_filters.each(function() {
+			if (!jQuery(this).hasClass(clr_class)) {
+				filters.push(getParams(this));
+			}
+		});
+		
+		var bundle_no = $('div.part_filters').children('input.bundle_no').val();
+		
 		send_data.action = 'add_filter';
-		send_data.params = getParams(this);
+		send_data.filters = filters;
+		send_data.bundle_no = bundle_no;
 		sendAjax(send_data, responder_obj);
+		
 	});
 	$(document).on('click', '.hide_footer', function() {
 		hideFooter();
+	});
+	$(document).on('click', '.delete_bundle', function() {
+		var send_data = {};
+		send_data.action = 'delete_bundle';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.create_bundle', function() {
+		var send_data = {};
+		send_data.action = 'create_bundle';
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.customer_view', function() {
+		var send_data = {};
+		send_data.action = 'customer_view';
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.duplicate_bundle', function() {
+		var send_data = {};
+		send_data.action = 'duplicate_bundle';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.hide_menu', function() {
+		$('.top_menu_shown').hide();
+		$('.top_menu_hidden').show();
+	});
+	$(document).on('click', '.show_menu', function() {
+		$('.top_menu_shown').show();
+		$('.top_menu_hidden').hide();
 	});
 });
 

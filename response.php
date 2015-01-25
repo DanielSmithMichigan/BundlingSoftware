@@ -47,10 +47,36 @@
 				$fPartSelector = hObjectPooler::getObject('fPartSelector');
 				$fPartSelector->getAndUpdateFooter($_POST['params']);
 			}
+		case 'delete_bundle':
+			if ($action === 'delete_bundle') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->attemptDeleteBundle($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+			}
+		case 'create_bundle':
+			if ($action === 'create_bundle') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->handleCreateBundleResponse();
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+			}
+		case 'duplicate_bundle':
+			if ($action === 'duplicate_bundle') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->handleDuplicateBundleResponse($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+			}
 		case 'add_filter':
 			if ($action === 'add_filter') {
 				$fPartSelector = hObjectPooler::getObject('fPartSelector');
-				$fPartSelector->getAndUpdateFilteredPartsList($_POST['params']);
+				$fPartSelector->getAndUpdateFilteredPartsList($_POST);
+			}
+		case 'customer_view':
+			if ($action === 'customer_view') {
+				$fPartSelector = hObjectPooler::getObject('fCustomerView');
+				$fPartSelector->getAndDisplayCustomerView($_POST);
 			}
 		default:
 			$menu -> getAndDisplayMenu('replace');
