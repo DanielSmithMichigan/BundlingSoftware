@@ -2,10 +2,10 @@
 class hBindParam{ 
     private $values = array(), $types = ''; 
     
-	public function addString(&$string){
+	public function addString($string){
 		$this->add('s', $string);
 	}
-	public function addNumber(&$string){
+	public function addNumber($string){
 		$this->add('i', $string);
 	}
     public function add( $type, &$value ){ 

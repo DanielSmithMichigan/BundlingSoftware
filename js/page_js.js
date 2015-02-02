@@ -1,4 +1,5 @@
 var memory = new memory();
+var fnTimer = new functionTimer();
 $(document).ready(function() {
 	var responder_obj = new responder();
 	$('.user_selector').click(function() {
@@ -87,15 +88,28 @@ $(document).ready(function() {
 		hideFooter();
 	});
 	$(document).on('click', '.delete_bundle', function() {
-		var send_data = {};
-		send_data.action = 'delete_bundle';
-		send_data.params = getParams(this);
-		sendAjax(send_data, responder_obj);
+		bootbox.confirm("Are you sure you want to delete this bundle?", function(result) {
+			if (result) {
+				var send_data = {};
+				send_data.action = 'delete_bundle';
+				send_data.params = getParams(this);
+				sendAjax(send_data, responder_obj);
+			}
+		}.bind(this));
 	});
 	$(document).on('click', '.create_bundle', function() {
 		var send_data = {};
 		send_data.action = 'create_bundle';
 		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.delete_all_bundles', function() {
+		bootbox.confirm("Are you sure you want to delete ALL bundles?", function(result) {
+			if (result) {
+				var send_data = {};
+				send_data.action = 'delete_all_bundles';
+				sendAjax(send_data, responder_obj);
+			}
+		}.bind(this));
 	});
 	$(document).on('click', '.customer_view', function() {
 		hide_menu();
@@ -109,12 +123,31 @@ $(document).ready(function() {
 		send_data.params = getParams(this);
 		sendAjax(send_data, responder_obj);
 	});
+	$(document).on('click', '.update_warranty', function() {
+		var send_data = {};
+		send_data.action = 'update_warranty';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
 	$(document).on('click', '.hide_menu', function() {
 		hide_menu();
 	});
 	$(document).on('click', '.show_menu', function() {
 		$('.top_menu_shown').show();
 		$('.top_menu_hidden').hide();
+	});
+	$(document).on('keyup', '.update_bundle_name_modifier', function () {
+		var function_name = 'updateBundleName';
+		var function_time = 800;
+		var fade_time = 250;
+		fnTimer.reseat(function_name, setTimeout(function() {
+			$(this).parent().children('.params').children('.bundle_title').val($(this).val());
+			var send_data = {};
+			send_data.action = 'update_bundle_title';
+			send_data.params = getParams($(this).parent());
+			sendAjax(send_data, responder_obj);
+			fnTimer.remove(function_name);
+		}.bind(this), function_time)); 
 	});
 });
 

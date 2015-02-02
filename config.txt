@@ -4,4 +4,5 @@ part_column_filters=appliance,brand,part_type;
 part_column_filter_names=Appliance,Brand,System;
 add_part_display_order=appliance,brand,part_type,price;
 add_part_display_order_names=Appliance,Brand,System,Price;
+warranty_options=1 Week, 1 Month, 3 Months, 1 Year;
 footer_size=30

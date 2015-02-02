@@ -5,12 +5,18 @@
 		<link rel="stylesheet" type="text/css" href="css/page_css.css" />
 		<script src="js/jquery-2.1.3.js"></script>
 		<script src="js/bootstrap.js"></script>
+		<script src="js/bootbox.js"></script>
+		<script src="js/jquery.bootstrap-growl.js"></script>
 		<script src="js/memory.js"></script>
+		<script src="js/functionTimer.js"></script>
 		<script src="js/page_js.js"></script>
 		<script src="js/responder.js"></script>
 		<!-- __HEAD_CONTENT__ -->
 	</head>
 	<body>
+		<div id="all_modals">
+		
+		</div>
 		<div id="static_wrapper">
 			<div id="static_body">
 				<div class="top_menu_shown">

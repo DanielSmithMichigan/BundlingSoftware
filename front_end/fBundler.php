@@ -15,6 +15,7 @@
 			$local_variables['bundles'] = $bundles;
 			$local_variables['part_columns'] = $part_columns;
 			$local_variables['part_column_names'] = hConfig::getSetting('part_column_names');
+			$local_variables['warranty_options'] = hConfig::getSetting('warranty_options');
 			$local_variables['num_part_col'] = count($part_columns);
 			$displayer = hObjectPooler::getObject('dDisplayer');
 			$template_name = 'product_bundles';

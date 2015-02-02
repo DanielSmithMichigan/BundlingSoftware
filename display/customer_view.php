@@ -21,19 +21,32 @@
 			</tr>
 			<?php foreach($bundle['parts'] as $part): ?>
 				<tr>
-				<?php foreach($local_variables['part_columns'] as $part_column): ?>
+					<?php foreach($local_variables['part_columns'] as $part_column): ?>
+						<td>
+							<?php echo $part[$part_column]; ?>
+						</td>
+					<?php endforeach; ?>
 					<td>
-						<?php echo $part[$part_column]; ?>
+						x <?php echo $part['qty']; ?>
 					</td>
-				<?php endforeach; ?>
-				<td>
-					<?php echo $part['qty']; ?>
-				</td>
-				<td>
-					<?php echo round($part['price'], 2); ?>
-				</td>
+					<td>
+						<?php echo round($part['price'], 2); ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
+			<?php if(!empty($bundle['bundle_warranty'])): ?>
+				<tr>
+					<th>
+						Warranty
+					</th>
+					<td colspan="<?php echo $local_variables['num_part_col']; ?>">
+						
+					</td>
+					<th>
+						<?php echo $bundle['bundle_warranty']; ?>
+					</th>
+				</tr>
+			<?php endif; ?>
 			<tr>
 				<th>
 					Total

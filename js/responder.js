@@ -1,4 +1,5 @@
 function responder() {
+	this.modal_count = 0;
 	this.catchResponse = function(responses) {
 		for(var i = 0; i < responses.length; i++) {
 			var response = responses[i];
@@ -9,6 +10,8 @@ function responder() {
 				this.performDataReplace(response);
 			} else if (action === 'show_footer') {
 				this.performShowFooter(response);
+			} else if (action === 'congratulate') {
+				this.performCongratulation(response);
 			}
 		}
 	};
@@ -38,5 +41,10 @@ function responder() {
 		var element_selector = '.' + slot_name;
 		var controller_id = response.controller_id;
 		$(element_selector).html(html);
+	}
+	this.performCongratulation = function(response) {
+		$.bootstrapGrowl(response.properties.message, {
+			align: 'center'
+		});
 	}
 }

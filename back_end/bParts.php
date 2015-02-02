@@ -1,16 +1,24 @@
 <?php
 	class bParts {
 		public function getParts($params = array()) {
+			$bUser = hObjectPooler::getObject('bUser');
+			$user_no = $bUser->getUserNo();
+			
 			$sql = ' select ';
 			$bind_param = new hBindParam();
 			$sql .= ' 
-				*
+				part.*
 			';
 			
 			$sql .= '
 			from parts part
+				left outer join part_uses part_use
+				on (part.part_no = part_use.part_no
+				and part_use.user_no = ?)
 				where 1 = 1
 				';
+				
+			$bind_param->addNumber($user_no);
 				
 			if (isset($params['filters']) && is_array($params['filters'])) {
 				foreach($params['filters'] as $filter) {
@@ -23,6 +31,7 @@
 			}
 			
 			$sql .= '
+			order by coalesce(part_use.use_count, 0) desc
 			limit 100
 			';
 			

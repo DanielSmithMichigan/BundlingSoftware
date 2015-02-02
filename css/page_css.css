@@ -95,3 +95,16 @@
 }
 
 /** END PARTS IN BUNDLES **/
+
+/** BUNDLER **/
+	.update_bundle_name_modifier {
+		margin: 10px;
+		font-weight: bold;
+	}
+/** END BUNDLER **/
+
+/** MODALS **/
+	#all_modals {
+		display: none;
+	}
+/** END MODALS **/

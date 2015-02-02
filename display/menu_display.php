@@ -12,7 +12,7 @@
 	<li>
 		<a class="hide_menu">
 			<span class="typcn typcn-arrow-minimise"></span>
-			Hide
+			Hide Menu
 		</a>
 	</li>
 </ul>

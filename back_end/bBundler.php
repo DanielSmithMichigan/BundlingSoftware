@@ -4,11 +4,39 @@
 			$part_no = $params['part_no'];
 			$bundle_no = $params['bundle_no'];
 			$this->addPartToBundle($part_no, $bundle_no);
+			$bUser = hObjectPooler::getObject('bUser');
+			$user_no = $bUser->getUserNo();
+			$this->addUserPartUse($user_no, $part_no);
+		}
+		public function addUserPartUse($user_no, $part_no) {
+			$sql = ' insert into part_uses ';
+			$bind_param = new hBindParam();
+			$sql .= ' (part_no, user_no, use_count) values ( ';
+			
+			$sql .= ' ? ';
+			$bind_param->addNumber($part_no);
+			$sql .= ' ,? ';
+			$bind_param->addNumber($user_no);
+			
+			$sql .= ' , 1) 
+			
+			on duplicate key 
+			update use_count = use_count + 1
+			';
+			hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 		}
 		public function handleCreateBundleResponse() {
 			$bUser = hObjectPooler::getObject('bUser');
 			$user_no = $bUser->getUserNo();
 			$this->createBundle($user_no);
+		}
+		public function handleDeleteAllBundlesResponse() {
+			$bUser = hObjectPooler::getObject('bUser');
+			$user_no = $bUser->getUserNo();
+			$params = array();
+			$params['user_no'] = $user_no;
+			$params['DELETE_ALL_BUNDLES'] = true;
+			$this->attemptDeleteBundle($params);
 		}
 		public function handleDuplicateBundleResponse($params) {
 			$bUser = hObjectPooler::getObject('bUser');
@@ -41,8 +69,8 @@
 		public function duplicateBundle($params) {
 			if (isset($params['user_no']) && isset($params['bundle_no'])) {
 				$sql = " 
-				insert into bundles (user_no, bundle_name, deleted, created_date, modified_date)
-					select user_no, concat(bundle_name, ' Duplicate'), false, now(), now()
+				insert into bundles (user_no, bundle_name, bundle_warranty, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, false, now(), now()
 						from bundles where user_no = ?
 						and bundle_no = ? 
 						and deleted = false
@@ -64,6 +92,32 @@
 				hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 			}
 		}
+		public function updateBundleTitle($params) {
+			if (isset($params['bundle_title']) && isset($params['bundle_no'])) {
+				$bind_param = new hBindParam();
+				$sql = ' 
+				update bundles 
+				set bundle_name = ?
+				where bundle_no = ?
+				';
+				$bind_param->addString($params['bundle_title']);
+				$bind_param->addNumber($params['bundle_no']);
+				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
+			}
+		}
+		public function updateBundleWarranty($params) {
+			if (isset($params['bundle_warranty']) && isset($params['bundle_no'])) {
+				$bind_param = new hBindParam();
+				$sql = ' 
+				update bundles 
+				set bundle_warranty = ?
+				where bundle_no = ?
+				';
+				$bind_param->addString($params['bundle_warranty']);
+				$bind_param->addNumber($params['bundle_no']);
+				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
+			}
+		}
 		public function createBundle($user_no) {
 			$sql = ' insert into bundles ';
 			$bind_param = new hBindParam();
@@ -80,7 +134,8 @@
 			$sql .= '
 			bundle.user_no,
 			bundle.bundle_no,
-			bundle.bundle_name
+			bundle.bundle_name,
+			bundle.bundle_warranty
 			';
 			$sql .= '
 			from bundles bundle
@@ -113,6 +168,7 @@
 			$sql .= '
 			bundle.bundle_no,
 			bundle.bundle_name,
+			bundle.bundle_warranty,
 			part.part_no,
 			part_conn.bundle_part_no,
 			part.price
@@ -176,6 +232,7 @@
 				$output_bundles[$input_bundle['bundle_no']] = array();
 				$output_bundles[$input_bundle['bundle_no']]['bundle_no'] = $input_bundle['bundle_no'];
 				$output_bundles[$input_bundle['bundle_no']]['bundle_name'] = $input_bundle['bundle_name'] ?: 'Bundle';
+				$output_bundles[$input_bundle['bundle_no']]['bundle_warranty'] = $input_bundle['bundle_warranty'];
 				$output_bundles[$input_bundle['bundle_no']]['parts'] = array();
 				$output_bundles[$input_bundle['bundle_no']]['price'] = 0;
 			}
@@ -186,16 +243,29 @@
 			return $output_bundles;
 		}
 		public function attemptDeleteBundle($params) {
-			$bUser = hObjectPooler::getObject('bUser');
-			$new_params = array();
-			$new_params['user_no'] = $bUser->getUserNo();
-			$new_params['bundle_no'] = $params['bundle_no'];
-			$bundles = $this->getBundleSkeletons($new_params);
-			$table_name = 'bundles';
-			$primary_key_column = 'bundle_no';
-			$records = array();
-			$records[] = $params['bundle_no'];
-			hQueryConstructor::markRecordsDeleted($table_name, $primary_key_column, $records);
+			if (isset($params['bundle_no']) || (isset($params['DELETE_ALL_BUNDLES']) && $params['DELETE_ALL_BUNDLES'] === true)) {
+				if (!isset($params['user_no'])) {
+					$bUser = hObjectPooler::getObject('bUser');
+					$user_no = $bUser->getUserNo();
+				} else {
+					$user_no = $params['user_no'];
+				}
+				if (!empty($user_no)) {
+					$records = array();
+					$new_params = array();
+					$new_params['user_no'] = $user_no;
+					if (!isset($params['DELETE_ALL_BUNDLES']) || $params['DELETE_ALL_BUNDLES'] !== true) {
+						$new_params['bundle_no'] = $params['bundle_no'];
+					}
+					$bundles = $this->getBundleSkeletons($new_params);
+					foreach($bundles as $bundle) {
+						$records[] = $bundle['bundle_no'];
+					}
+					$table_name = 'bundles';
+					$primary_key_column = 'bundle_no';
+					hQueryConstructor::markRecordsDeleted($table_name, $primary_key_column, $records);
+				}
+			}
 		}
 	} 
 ?>

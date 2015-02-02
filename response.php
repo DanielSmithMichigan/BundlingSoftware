@@ -53,6 +53,7 @@
 				$bBundler->attemptDeleteBundle($_POST['params']);
 				$fBundler = hObjectPooler::getObject('fBundler');
 				$fBundler->getAndDisplayCurrUserBundles();
+				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Deleted'));
 			}
 		case 'create_bundle':
 			if ($action === 'create_bundle') {
@@ -60,6 +61,14 @@
 				$bBundler->handleCreateBundleResponse();
 				$fBundler = hObjectPooler::getObject('fBundler');
 				$fBundler->getAndDisplayCurrUserBundles();
+			}
+		case 'delete_all_bundles':
+			if ($action === 'delete_all_bundles') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->handleDeleteAllBundlesResponse();
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+				$displayer->addGenericCommand('congratulate', array('message' => 'Bundles Deleted'));
 			}
 		case 'duplicate_bundle':
 			if ($action === 'duplicate_bundle') {
@@ -77,6 +86,22 @@
 			if ($action === 'customer_view') {
 				$fPartSelector = hObjectPooler::getObject('fCustomerView');
 				$fPartSelector->getAndDisplayCustomerView($_POST);
+			}
+		case 'update_bundle_title':
+			if ($action === 'update_bundle_title') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->updateBundleTitle($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Title Updated'));
+			}
+		case 'update_warranty':
+			if ($action === 'update_warranty') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->updateBundleWarranty($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Warranty Updated'));
 			}
 		default:
 			$menu -> getAndDisplayMenu('replace');
