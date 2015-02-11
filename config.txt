@@ -1,8 +1,10 @@
 part_columns=part_num,brand,part_description;
-part_column_names=Part Number,Brand,Part Description;
+part_column_names=Part Number,Brand,Description;
+part_column_names_cust=Repair Description;
+part_columns_cust=desc_qty;
 part_column_filters=appliance,brand,part_type;
 part_column_filter_names=Appliance,Brand,System;
-add_part_display_order=appliance,brand,part_type,price;
-add_part_display_order_names=Appliance,Brand,System,Price;
+add_part_display_order=appliance,brand,part_type;
+add_part_display_order_names=Appliance,Brand,System;
 warranty_options=1 Week, 1 Month, 3 Months, 1 Year;
 footer_size=30

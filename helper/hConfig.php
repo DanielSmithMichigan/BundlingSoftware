@@ -17,10 +17,15 @@
 				self::$configuration[$line_var_name] = $line_var_value;
 			}
 		}
-		public static function getSetting($setting_name) {
+		public static function getSetting($setting_name, $force_array = false) {
 			$output = false;
 			if (isset(self::$configuration[$setting_name])) {
 				$output = self::$configuration[$setting_name];
+			}
+			if ($force_array === true) {
+				if (!is_array($output)) {
+					$output = array($output);
+				}
 			}
 			return $output;
 		}

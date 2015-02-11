@@ -3,7 +3,8 @@
 		public function handleAddPartResponse($params) {
 			$part_no = $params['part_no'];
 			$bundle_no = $params['bundle_no'];
-			$this->addPartToBundle($part_no, $bundle_no);
+			$type = $params['type'];
+			$this->addPartToBundle($part_no, $bundle_no, $type);
 			$bUser = hObjectPooler::getObject('bUser');
 			$user_no = $bUser->getUserNo();
 			$this->addUserPartUse($user_no, $part_no);
@@ -53,15 +54,17 @@
 			$records[] = $params['bundle_part_no'];
 			hQueryConstructor::markRecordsDeleted($table_name, $primary_key_column, $records);
 		}
-		public function addPartToBundle($part_no, $bundle_no) {
+		public function addPartToBundle($part_no, $bundle_no, $type) {
 			$sql = ' insert into bundle_parts ';
 			$bind_param = new hBindParam();
-			$sql .= ' (part_no, bundle_no) values ( ';
+			$sql .= ' (part_no, bundle_no, type) values ( ';
 			
 			$sql .= ' ? ';
 			$bind_param->addNumber($part_no);
 			$sql .= ' ,? ';
 			$bind_param->addNumber($bundle_no);
+			$sql .= ' ,? ';
+			$bind_param->addString($type);
 			
 			$sql .= ' ) ';
 			hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
@@ -80,8 +83,8 @@
 				$bind_param->addNumber($params['bundle_no']);
 				$new_bundle_id = hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 				$sql = "
-					insert into bundle_parts (bundle_no, part_no, deleted)
-						select ? , part_no, false
+					insert into bundle_parts (bundle_no, part_no, type, deleted)
+						select ? , part_no, type, false
 							from bundle_parts
 							where bundle_no = ?
 							and deleted = false
@@ -165,14 +168,17 @@
 			if ($group === true) {
 				$sql .= ' count(*) as qty, ';
 			}
-			$sql .= '
+			$sql .= "
 			bundle.bundle_no,
 			bundle.bundle_name,
 			bundle.bundle_warranty,
 			part.part_no,
 			part_conn.bundle_part_no,
-			part.price
-			';
+			part_conn.type,
+			case when part_conn.type = 'primary' then part.price_primary
+			when part_conn.type = 'secondary' then part.price_secondary
+            end as price
+			";
 			foreach($part_columns as $part_column) {
 				$sql .= ',part.'.$part_column;
 			}
@@ -195,9 +201,9 @@
 				$bind_param->addString($params['bundle_no']);
 			}
 			if ($group === true) {
-				$sql .= ' group by part.part_no, bundle.bundle_no ';
+				$sql .= ' group by part_conn.type, part.part_no, bundle.bundle_no ';
 			}
-			$sql .= ' order by bundle.bundle_no ';
+			$sql .= ' order by bundle.bundle_no, part_conn.type asc,part.part_no ';
 			$results = hQueryConstructor::executeStatement($sql, $bind_param);
 			return $results;
 		}

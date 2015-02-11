@@ -84,6 +84,18 @@
 	}
 /** END BODY AND FOOTER **/
 
+/** INDIVIDUAL PARTS **/
+
+.add_part_section { 
+	margin-top: 20px;
+}
+
+.add_part_button {
+	margin-bottom: 10px;
+}
+
+/** INDIVIDUAL PARTS **/
+
 /** PARTS IN BUNDLES **/
 
 .bundled_part {

@@ -85,6 +85,9 @@
 					</th>
 				<?php endforeach; ?>
 				<th>
+					Type
+				</th>
+				<th>
 					QTY
 				</th>
 				<th>
@@ -92,29 +95,32 @@
 				</th>
 			</tr>
 			<?php foreach($bundle['parts'] as $part): ?>
-				<tr>
-				<?php foreach($local_variables['part_columns'] as $part_column): ?>
+				<tr class="<?php echo($part['type'] === 'primary')?'':''?>">
+					<?php foreach($local_variables['part_columns'] as $part_column): ?>
+						<td>
+							<?php echo $part[$part_column]; ?>
+						</td>
+					<?php endforeach; ?>
 					<td>
-						<?php echo $part[$part_column]; ?>
+						<?php echo ucfirst($part['type']); ?>
 					</td>
-				<?php endforeach; ?>
-				<td>
-					<?php echo $part['qty']; ?>
-				</td>
-				<td>
-					<?php echo round($part['price'], 2); ?>
-				</td>
+					<td>
+						<?php echo $part['qty']; ?>
+					</td>
+					<td>
+						$<?php echo number_format($part['price'], 2); ?>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 			<tr>
 				<th>
 					Total
 				</th>
-				<td colspan="<?php echo $local_variables['num_part_col']; ?>">
+				<td colspan="<?php echo $local_variables['num_part_col'] + 1; ?>">
 				
 				</td>
 				<th>
-					<?php echo round($bundle['price'], 2); ?>
+					$<?php echo number_format($bundle['price'], 2); ?>
 				</th>
 			</tr>
 		</table>

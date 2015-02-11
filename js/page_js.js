@@ -138,7 +138,7 @@ $(document).ready(function() {
 	});
 	$(document).on('keyup', '.update_bundle_name_modifier', function () {
 		var function_name = 'updateBundleName';
-		var function_time = 800;
+		var function_time = 1500;
 		var fade_time = 250;
 		fnTimer.reseat(function_name, setTimeout(function() {
 			$(this).parent().children('.params').children('.bundle_title').val($(this).val());
