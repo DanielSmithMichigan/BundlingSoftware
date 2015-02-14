@@ -31,12 +31,26 @@
 							</td>
 						<?php endforeach; ?>
 						<td class="text-right">
-							$<?php echo number_format($part['disp_price'], 2); ?>
+							$<?php echo number_format($part['cust_disp_price'], 2); ?>
 						</td>
 						<th>
 						</th>
 					</tr>
 				<?php endforeach; ?>
+				<?php if($bundle['no_parts_flag']): ?>
+					<tr>
+						<td>
+						</td>
+						<td>
+							Labor Cost
+						</td>
+						<td class="text-right">
+							$<?php echo $bundle['price_adjustment']; ?>
+						</td>
+						<td>
+						</td>
+					</tr>
+				<?php endif; ?>
 				<?php if(!empty($bundle['bundle_warranty'])): ?>
 					<tr>
 						<th>
@@ -58,7 +72,7 @@
 						Total
 					</th>
 					<th class="text-right">
-						$<?php echo number_format($bundle['price'], 2); ?>
+						$<?php echo number_format($bundle['final_price'], 2); ?>
 					</th>
 					<th>
 					</th>

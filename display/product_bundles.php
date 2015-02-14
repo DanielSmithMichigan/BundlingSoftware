@@ -38,6 +38,15 @@
 						Duplicate Bundle
 					</a>
 				</li>
+				<li>
+					<a href="#" class="adjust_price">
+						<div class="params">
+							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
+						</div>
+						<span class="typcn typcn-calculator"></span>
+						Adjust Price
+					</a>
+				</li>
 				<li role="presentation" class="dropdown alter_title" data-title="Warranty">
 					<a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="true">
 						<span class="change_me">
@@ -112,6 +121,33 @@
 					</td>
 				</tr>
 			<?php endforeach; ?>
+			<?php if($bundle['modified_price']): ?>
+				<tr>
+					<th>
+						Price (Before Modification)
+					</th>
+					<td colspan="<?php echo $local_variables['num_part_col'] + 1; ?>">
+					
+					</td>
+					<th>
+						$<?php echo number_format($bundle['price'], 2); ?>
+					</th>
+				</tr>
+				<tr>
+					<th>
+						Price Adjustment
+					</th>
+					<td colspan="<?php echo $local_variables['num_part_col'] + 1; ?>">
+						<div class="params">
+							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
+						</div>
+						<a class="remove_price_modification" style="cursor: pointer">(remove modification)</a>
+					</td>
+					<th>
+						$<?php echo number_format($bundle['price_adjustment'], 2); ?>
+					</th>
+				</tr>
+			<?php endif; ?>
 			<tr>
 				<th>
 					Total
@@ -120,7 +156,7 @@
 				
 				</td>
 				<th>
-					$<?php echo number_format($bundle['price'], 2); ?>
+					$<?php echo number_format($bundle['final_price'], 2); ?>
 				</th>
 			</tr>
 		</table>

@@ -138,7 +138,7 @@ $(document).ready(function() {
 	});
 	$(document).on('keyup', '.update_bundle_name_modifier', function () {
 		var function_name = 'updateBundleName';
-		var function_time = 1500;
+		var function_time = 800;
 		var fade_time = 250;
 		fnTimer.reseat(function_name, setTimeout(function() {
 			$(this).parent().children('.params').children('.bundle_title').val($(this).val());
@@ -148,6 +148,41 @@ $(document).ready(function() {
 			sendAjax(send_data, responder_obj);
 			fnTimer.remove(function_name);
 		}.bind(this), function_time)); 
+	});
+	$(document).on('click', '.adjust_price', function() {
+		bootbox.prompt("What would you like the price to be?", function(price) {
+			if (price !== 'cancel') {
+				var return_val = false;
+				var error = false;
+				if (price) {
+					if (!isNaN(parseFloat(price)) && isFinite(price)) {
+						var send_data = {};
+						send_data.action = 'update_bundle_final_price';
+						send_data.params = getParams($(this).parent());
+						send_data.params.final_price = price;
+						sendAjax(send_data, responder_obj);
+					} else {
+						error = 'Please enter a number';
+					}
+				} else {
+					error = 'Please enter a price';
+				}
+				if (error === false) {
+					return_val = true;
+				} else {
+					$.bootstrapGrowl(error, {
+						align: 'center'
+					});
+				}
+				return return_val;
+			}
+		}.bind(this));
+	});
+	$(document).on('click', '.remove_price_modification', function() {
+						var send_data = {};
+		send_data.action = 'remove_bundle_final_price';
+		send_data.params = getParams($(this).parent());
+		sendAjax(send_data, responder_obj);
 	});
 });
 

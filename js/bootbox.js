@@ -387,7 +387,7 @@
     options.message = form;
 
     options.buttons.cancel.callback = options.onEscape = function() {
-      return options.callback(null);
+      return options.callback('cancel');
     };
 
     options.buttons.confirm.callback = function() {

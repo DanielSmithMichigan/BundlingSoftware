@@ -72,8 +72,8 @@
 		public function duplicateBundle($params) {
 			if (isset($params['user_no']) && isset($params['bundle_no'])) {
 				$sql = " 
-				insert into bundles (user_no, bundle_name, bundle_warranty, deleted, created_date, modified_date)
-					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, false, now(), now()
+				insert into bundles (user_no, bundle_name, bundle_warranty, final_price, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, final_price, false, now(), now()
 						from bundles where user_no = ?
 						and bundle_no = ? 
 						and deleted = false
@@ -108,6 +108,31 @@
 				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
 			}
 		}
+		public function updateBundleFinalPrice($params) {
+			if (isset($params['final_price']) && isset($params['bundle_no'])) {
+				$bind_param = new hBindParam();
+				$sql = ' 
+				update bundles 
+				set final_price = ?
+				where bundle_no = ?
+				';
+				$bind_param->addString($params['final_price']);
+				$bind_param->addNumber($params['bundle_no']);
+				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
+			}
+		}
+		public function removeBundleFinalPrice($params) {
+			if (isset($params['bundle_no'])) {
+				$bind_param = new hBindParam();
+				$sql = ' 
+				update bundles 
+				set final_price = null
+				where bundle_no = ?
+				';
+				$bind_param->addNumber($params['bundle_no']);
+				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
+			}
+		}
 		public function updateBundleWarranty($params) {
 			if (isset($params['bundle_warranty']) && isset($params['bundle_no'])) {
 				$bind_param = new hBindParam();
@@ -138,7 +163,8 @@
 			bundle.user_no,
 			bundle.bundle_no,
 			bundle.bundle_name,
-			bundle.bundle_warranty
+			bundle.bundle_warranty,
+			bundle.final_price
 			';
 			$sql .= '
 			from bundles bundle
@@ -221,10 +247,9 @@
 			$bundles = $this->getBundleSkeletons($params);
 			return $bundles;
 		}
-		public function getAndFormatCurrUserBundles() {
+		public function getAndFormatCurrUserBundles($params = array()) {
 			$bundle_parts = $this->getCurrUserBundleParts(true);
 			$bundle_skeletons = $this->getCurrUserBundleSkeletons(true);
-			$params = array();
 			$params['input_bundles_with_parts'] = $bundle_parts;
 			$params['bundle_skeletons'] = $bundle_skeletons;
 			$bundles = $this->formatBundles($params);
@@ -239,15 +264,67 @@
 				$output_bundles[$input_bundle['bundle_no']]['bundle_no'] = $input_bundle['bundle_no'];
 				$output_bundles[$input_bundle['bundle_no']]['bundle_name'] = $input_bundle['bundle_name'] ?: 'Bundle';
 				$output_bundles[$input_bundle['bundle_no']]['bundle_warranty'] = $input_bundle['bundle_warranty'];
+				$output_bundles[$input_bundle['bundle_no']]['final_price'] = $input_bundle['final_price'];
 				$output_bundles[$input_bundle['bundle_no']]['parts'] = array();
 				$output_bundles[$input_bundle['bundle_no']]['price'] = 0;
 			}
+			
 			foreach($input_bundles_with_parts as $input_bundle) {
 				$output_bundles[$input_bundle['bundle_no']]['parts'][$input_bundle['bundle_part_no']] = $input_bundle;
 				$output_bundles[$input_bundle['bundle_no']]['price'] += $input_bundle['price'] * $input_bundle['qty'];
 			}
+			
+			foreach($output_bundles as &$bundle) {
+				$p_difference = 1;
+				$a_difference = 0;
+				$zero_price_flag = false;
+				$no_parts_flag = count($bundle['parts']) === 0;
+				$modified_price = false;
+				$customer_view = isset($params['customer_view']) && $params['customer_view'] === true;
+				if (empty($bundle['final_price'])) {
+					$bundle['final_price'] = round($bundle['price'], 2);
+				} else {
+					$modified_price = true;
+					$bundle['final_price'] = round($bundle['final_price'], 2);
+					if ($bundle['price'] !== 0) {
+						$p_difference = $bundle['final_price'] / $bundle['price'];
+					} else {
+						$zero_price_flag = true;
+						$p_difference = 1;
+					}
+					$a_difference = $bundle['final_price'] - $bundle['price'];
+				}
+				
+				foreach($bundle['parts'] as $part_key => &$part) {
+					$part['modified_price'] = $part['price'];
+					if ($customer_view) {
+						$part['modified_price'] *= $p_difference;
+					}
+				}
+				
+				unset($part);
+				
+				foreach($bundle['parts'] as $part_key => &$part) {
+					$part['cust_disp_price'] = $part['modified_price'] * $part['qty'];
+					$part['desc_qty'] = $part['part_description'] . ' x' . $part['qty'];
+				}
+				
+				unset($part);
+				if (count($bundle['parts'])) {
+					$bundle['parts'] = hGeneral::roundAndSquare($bundle['parts'], 'cust_disp_price', $bundle['final_price']);
+				}
+				
+				$bundle['zero_price_flag'] = $zero_price_flag;
+				$bundle['no_parts_flag'] = $no_parts_flag;
+				$bundle['modified_price'] = $modified_price;
+				$bundle['price_adjustment'] = $a_difference;
+				
+			}
+			
+			unset($bundle);
 			return $output_bundles;
 		}
+		
 		public function attemptDeleteBundle($params) {
 			if (isset($params['bundle_no']) || (isset($params['DELETE_ALL_BUNDLES']) && $params['DELETE_ALL_BUNDLES'] === true)) {
 				if (!isset($params['user_no'])) {

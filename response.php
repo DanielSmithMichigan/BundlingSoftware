@@ -91,10 +91,22 @@
 			if ($action === 'update_bundle_title') {
 				$bBundler = hObjectPooler::getObject('bBundler');
 				$bBundler->updateBundleTitle($_POST['params']);
-				$fBundler = hObjectPooler::getObject('fBundler');
-				$fBundler->getAndDisplayCurrUserBundles();
 				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Title Updated'));
 			}
+		case 'update_bundle_final_price':
+			if ($action === 'update_bundle_final_price') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->updateBundleFinalPrice($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+			}	
+		case 'remove_bundle_final_price':
+			if ($action === 'remove_bundle_final_price') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->removeBundleFinalPrice($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+			}		
 		case 'update_warranty':
 			if ($action === 'update_warranty') {
 				$bBundler = hObjectPooler::getObject('bBundler');

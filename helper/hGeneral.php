@@ -21,5 +21,30 @@
 			}
 			return $output;
 		}
+		public static function roundAndSquare($numbers, $on, $final) {
+			$largest_key = false;
+			$largest_amount = false;
+			$sum = 0;
+			
+			foreach($numbers as $number_key => &$number) {
+				if ($largest_amount === false || $number[$on] > $largest_amount) {
+					$largest_key = $number_key;
+					$largest_amount = $number[$on];
+				}
+				$number[$on] = round($number[$on], 2);
+			}
+			
+			unset($number);
+			
+			foreach($numbers as $number_key => $number) {
+				if ($number_key !== $largest_key) {
+					$sum += $number[$on];
+				}
+			}
+			
+			$numbers[$largest_key][$on] = $final - $sum;
+			
+			return $numbers;
+		}
 	}
 ?>
