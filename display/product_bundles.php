@@ -14,13 +14,6 @@
 			</div>
 			<ul class="nav navbar-nav">
 				<li>
-					<input type="text" class="update_bundle_name_modifier" value="<?php echo $bundle['bundle_name']; ?>" />
-					<div class="params">
-						<input type="hidden" name="bundle_title" class="bundle_title" value="<?php echo $bundle['bundle_name']; ?>" />
-						<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
-					</div>
-				</li>
-				<li>
 					<a href="#" class="add_parts">
 						<div class="params">
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
@@ -42,6 +35,7 @@
 					<a href="#" class="adjust_price">
 						<div class="params">
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
+							<input type="hidden" name="price_adjustment" value="<?php echo round($bundle['price_adjustment'], 2); ?>" />
 						</div>
 						<span class="typcn typcn-calculator"></span>
 						Adjust Price

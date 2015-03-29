@@ -13,7 +13,7 @@
 			$sql .= '
 			from parts part
 				left outer join part_uses part_use
-				on (part.part_no = part_use.part_no
+				on (part.part_num = part_use.part_num
 				and part_use.user_no = ?)
 				where 1 = 1
 				';

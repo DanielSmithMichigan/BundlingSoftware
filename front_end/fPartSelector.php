@@ -45,7 +45,7 @@
 			
 			$bParts = hObjectPooler::getObject('bParts');
 			$parts = $bParts->getParts($new_params);
-			
+			asd($parts);
 			$parts_list_params = array();
 			$parts_list_params['parts'] = $parts;
 			$part_display_config = hConfig::getSettingPair('add_part_display_order', 'add_part_display_order_names');

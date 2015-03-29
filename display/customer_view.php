@@ -1,37 +1,52 @@
-<?php foreach($local_variables['bundles'] as $bundle): ?>
-	<div class="col-xs-10 col-xs-offset-1">
+<?php if(count($local_variables['observations']) > 0): ?>
+	<div class="container">
+		<h3>Observations</h3>
+		<table class="table">
+			<?php foreach($local_variables['observations'] as $observation): ?>
+				<tr>
+					<td>
+					<?php echo $observation['observation_body']; ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		</table>
+	</div>
+<?php endif; ?>
+<?php $order_num = 1; ?>
+<div class="container">
+	<?php foreach($local_variables['bundles'] as $bundle): ?>
 		<div class="panel panel-default">
 			<nav class="navbar navbar-default">
 				<div class="navbar-header">
-				  <span class="navbar-brand"><?php echo $bundle['bundle_name']; ?></span>
+				  <span class="navbar-brand"><?php echo 'Repair Option '.$order_num++; ?></span>
 				</div>
 			</nav>
 			<table class="table">
 				<tr>
 					<th>
 					</th>
-					<?php foreach($local_variables['part_column_names'] as $part_column): ?>
-						<th>
-							<?php echo $part_column; ?>
-						</th>
-					<?php endforeach; ?>
+					<th>
+						Appliance
+					</th>
+					<th>
+					</th>
 					<th class="text-right">
 						Price
 					</th>
 					<th>
 					</th>
 				</tr>
-				<?php foreach($bundle['parts'] as $part): ?>
+				<?php foreach($bundle['parts_by_appliance'] as $appliance): ?>
 					<tr>
 						<th>
 						</th>
-						<?php foreach($local_variables['part_columns'] as $part_column): ?>
-							<td>
-								<?php echo $part[$part_column]; ?>
-							</td>
-						<?php endforeach; ?>
-						<td class="text-right">
-							$<?php echo number_format($part['cust_disp_price'], 2); ?>
+						<td>
+							<?php echo $appliance['title']; ?>
+						</td>
+						<td>
+							<?php echo join(", ", $appliance['part_names']); ?>
+						</td>
+						<td>
 						</td>
 						<th>
 						</th>
@@ -43,6 +58,8 @@
 						</td>
 						<td>
 							Labor Cost
+						</td>
+						<td>
 						</td>
 						<td class="text-right">
 							$<?php echo $bundle['price_adjustment']; ?>
@@ -58,6 +75,8 @@
 						<th>
 							Warranty
 						</th>
+						<th>
+						</th>
 						<th class="text-right">
 							<?php echo $bundle['bundle_warranty']; ?>
 						</th>
@@ -71,6 +90,8 @@
 					<th>
 						Total
 					</th>
+					<th>
+					</th>
 					<th class="text-right">
 						$<?php echo number_format($bundle['final_price'], 2); ?>
 					</th>
@@ -79,6 +100,6 @@
 				</tr>
 			</table>
 		</div>
-	</div>
-<?php endforeach; ?>
+	<?php endforeach; ?>
+</div>
 

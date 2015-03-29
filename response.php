@@ -28,6 +28,11 @@
 				$fBundler = hObjectPooler::getObject('fBundler');
 				$fBundler->getAndDisplayCurrUserBundles();
 			}
+		case 'update_parts':
+			if ($action === 'update_parts') {
+				$fUpdateParts = hObjectPooler::getObject('fUpdateParts');
+				$fUpdateParts->displayFileUpload();
+			}
 		case 'add_part':
 			if ($action === 'add_part') {
 				$bBundler = hObjectPooler::getObject('bBundler');
@@ -114,6 +119,32 @@
 				$fBundler = hObjectPooler::getObject('fBundler');
 				$fBundler->getAndDisplayCurrUserBundles();
 				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Warranty Updated'));
+			}
+		case 'manage_observations':
+			if ($action === 'manage_observations') {
+				$fObservations = hObjectPooler::getObject('fObservations');
+				$fObservations->getAndDisplayObservations();
+			}
+		case 'add_observation':
+			if ($action === 'add_observation') {
+				$bObservations = hObjectPooler::getObject('bObservations');
+				$bObservations->addCurrUserObservation($_POST['params']);
+				$fObservations = hObjectPooler::getObject('fObservations');
+				$fObservations->getAndDisplayObservations();
+			}
+		case 'delete_observation':
+			if ($action === 'delete_observation') {
+				$bObservations = hObjectPooler::getObject('bObservations');
+				$bObservations->deleteCurrUserObservation($_POST['params']);
+				$fObservations = hObjectPooler::getObject('fObservations');
+				$fObservations->getAndDisplayObservations();
+			}
+		case 'delete_observations':
+			if ($action === 'delete_observations') {
+				$bObservations = hObjectPooler::getObject('bObservations');
+				$bObservations->deleteCurrUserObservations();
+				$fObservations = hObjectPooler::getObject('fObservations');
+				$fObservations->getAndDisplayObservations();
 			}
 		default:
 			$menu -> getAndDisplayMenu('replace');

@@ -14,6 +14,16 @@ $(document).ready(function() {
 		send_data.action = 'create_bundles';
 		sendAjax(send_data, responder_obj);
 	});
+	$(document).on("click", '.manage_observations', function() {
+		var send_data = {};
+		send_data.action = 'manage_observations';
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on("click", '.update_parts', function() {
+		var send_data = {};
+		send_data.action = 'update_parts';
+		sendAjax(send_data, responder_obj);
+	});
 	$(document).on("click", '.add_parts', function() {
 		var send_data = {};
 		send_data.action = 'add_parts';
@@ -150,7 +160,11 @@ $(document).ready(function() {
 		}.bind(this), function_time)); 
 	});
 	$(document).on('click', '.adjust_price', function() {
-		bootbox.prompt("What would you like the price to be?", function(price) {
+		var params = getParams($(this).parent());
+		bootbox.prompt({
+		title: "What would you like the final price adjustment to be?",
+		value: params.price_adjustment,
+		callback: function(price) {
 			if (price !== 'cancel') {
 				var return_val = false;
 				var error = false;
@@ -158,8 +172,8 @@ $(document).ready(function() {
 					if (!isNaN(parseFloat(price)) && isFinite(price)) {
 						var send_data = {};
 						send_data.action = 'update_bundle_final_price';
-						send_data.params = getParams($(this).parent());
-						send_data.params.final_price = price;
+						send_data.params = params
+						send_data.params.price_adjustment = price;
 						sendAjax(send_data, responder_obj);
 					} else {
 						error = 'Please enter a number';
@@ -176,13 +190,80 @@ $(document).ready(function() {
 				}
 				return return_val;
 			}
-		}.bind(this));
+		}.bind(this)});
 	});
 	$(document).on('click', '.remove_price_modification', function() {
-						var send_data = {};
+		var send_data = {};
 		send_data.action = 'remove_bundle_final_price';
 		send_data.params = getParams($(this).parent());
 		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.add_observation', function() {
+		bootbox.prompt({
+		title: "What is your observation?",
+		callback: function(observation) {
+			if (observation !== 'cancel') {
+				var return_val = false;
+				var error = false;
+				if (observation) {
+					var send_data = {};
+					send_data.action = 'add_observation';
+					send_data.params = {};
+					send_data.params.observation = observation;
+					sendAjax(send_data, responder_obj);
+				} else {
+					error = 'Please enter an observation';
+				}
+				if (error === false) {
+					return_val = true;
+				} else {
+					$.bootstrapGrowl(error, {
+						align: 'center'
+					});
+				}
+				return return_val;
+			}
+		}.bind(this)});
+	});
+	$(document).on('click', '.duplicate_bundle', function() {
+		var send_data = {};
+		send_data.action = 'duplicate_bundle';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('change', '#file_uploader', function() {
+		var files = event.target.files;
+		var fileData = new FormData();
+		$.each(files, function(key, value) {
+			fileData.append(key, value);
+		});
+		var data = {};
+		data.action = 'upload_file';
+		data.fileData = fileData;
+		$.ajax({
+			url: 'response.php',
+			type: 'POST',
+			data: data,
+			cache: false,
+			dataType: 'json',
+			processData: false,
+			contentType: false,
+		});		
+	});
+	$(document).on('click', '.delete_observation', function() {
+		var send_data = {};
+		send_data.action = 'delete_observation';
+		send_data.params = getParams(this);
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.delete_observations', function() {
+		bootbox.confirm("Are you sure you want to delete ALL observations?", function(result) {
+			if (result) {
+		var send_data = {};
+		send_data.action = 'delete_observations';
+		sendAjax(send_data, responder_obj);
+			}
+		}.bind(this));
 	});
 });
 

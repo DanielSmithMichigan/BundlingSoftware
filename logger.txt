@@ -1,14 +1,97 @@
-DEBUG: 2015-02-14 04:49:21
-bBundler :: updateBundleFinalPrice :: 112
+DEBUG: 2015-03-29 04:29:25
+bBundler :: handleAddPartResponse :: 4
 Array
 (
-    [bundle_no] => 83
-    [final_price] => 1.6
+    [bundle_no] => 1
+    [part_num] => 00013
+    [type] => primary
 )
 
-DEBUG: 2015-02-14 04:54:34
+DEBUG: 2015-03-30 12:48:27
+fObservations :: displayObservations :: 17
 Array
 (
-    [bundle_no] => 83
+    [0] => Array
+        (
+            [observation_no] => 1
+            [user_no] => 1
+            [observation_body] => whatever
+            [deleted] => 0
+        )
+
+)
+
+DEBUG: 2015-03-30 12:48:41
+fObservations :: displayObservations :: 17
+Array
+(
+    [0] => Array
+        (
+            [observation_no] => 1
+            [user_no] => 1
+            [observation_body] => whatever
+            [deleted] => 0
+        )
+
+)
+
+DEBUG: 2015-03-30 12:56:47
+Array
+(
+    [action] => add_observation
+    [params] => Array
+        (
+            [observation] => One Two Three
+        )
+
+)
+
+DEBUG: 2015-03-30 01:03:25
+Array
+(
+    [action] => delete_observation
+    [params] => Array
+        (
+            [undefined] => 2
+        )
+
+)
+
+DEBUG: 2015-03-30 01:03:37
+Array
+(
+    [action] => delete_observation
+    [params] => Array
+        (
+            [observation_no] => 1
+        )
+
+)
+
+DEBUG: 2015-03-30 01:22:05
+fCustomerView :: getCustomerViewBundles :: 8
+Array
+(
+    [5] => Array
+        (
+            [bundle_no] => 5
+            [bundle_name] => Bundle
+            [bundle_warranty] => 
+            [price_adjustment] => 0
+            [parts] => Array
+                (
+                )
+
+            [parts_by_appliance] => Array
+                (
+                )
+
+            [price] => 0
+            [final_price] => 0
+            [zero_price_flag] => 
+            [no_parts_flag] => 1
+            [modified_price] => 
+        )
+
 )
 

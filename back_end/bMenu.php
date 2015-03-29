@@ -7,7 +7,8 @@
 			$bind_param = new hBindParam();
 			
 			$sql .= ' menu.menu_item_display, menu.menu_item_name, menu.glyphicon from menu
-			where 1 = 1 ';
+			where 1 = 1 
+			order by order_by asc';
 			
 			$results = hQueryConstructor::executeStatement($sql, $bind_param);
 			return $results;

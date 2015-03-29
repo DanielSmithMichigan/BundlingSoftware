@@ -21,7 +21,7 @@
 					<button type="button" class="add_part_button btn btn-primary add_part">
 						<div class="params">
 							<input type="hidden" name="bundle_no" class="bundle_no" value="<?php echo $local_variables['bundle_no']; ?>" />
-							<input type="hidden" name="part_no" class="part_no" value="<?php echo $part['part_no']; ?>" />
+							<input type="hidden" name="part_num" class="part_num" value="<?php echo $part['part_num']; ?>" />
 							<input type="hidden" name="type" class="type" value="primary" />
 						</div>
 						Primary
@@ -30,7 +30,7 @@
 					<button type="button" class="add_part_button btn btn-danger add_part">
 						<div class="params">
 							<input type="hidden" name="bundle_no" class="bundle_no" value="<?php echo $local_variables['bundle_no']; ?>" />
-							<input type="hidden" name="part_no" class="part_no" value="<?php echo $part['part_no']; ?>" />
+							<input type="hidden" name="part_num" class="part_num" value="<?php echo $part['part_num']; ?>" />
 							<input type="hidden" name="type" class="type" value="secondary" />
 						</div>
 						Secondary

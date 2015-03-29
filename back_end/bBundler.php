@@ -1,21 +1,21 @@
 <?php 
 	class bBundler {
 		public function handleAddPartResponse($params) {
-			$part_no = $params['part_no'];
+			$part_num = $params['part_num'];
 			$bundle_no = $params['bundle_no'];
 			$type = $params['type'];
-			$this->addPartToBundle($part_no, $bundle_no, $type);
+			$this->addPartToBundle($part_num, $bundle_no, $type);
 			$bUser = hObjectPooler::getObject('bUser');
 			$user_no = $bUser->getUserNo();
-			$this->addUserPartUse($user_no, $part_no);
+			$this->addUserPartUse($user_no, $part_num);
 		}
-		public function addUserPartUse($user_no, $part_no) {
+		public function addUserPartUse($user_no, $part_num) {
 			$sql = ' insert into part_uses ';
 			$bind_param = new hBindParam();
-			$sql .= ' (part_no, user_no, use_count) values ( ';
+			$sql .= ' (part_num, user_no, use_count) values ( ';
 			
 			$sql .= ' ? ';
-			$bind_param->addNumber($part_no);
+			$bind_param->addString($part_num);
 			$sql .= ' ,? ';
 			$bind_param->addNumber($user_no);
 			
@@ -54,13 +54,13 @@
 			$records[] = $params['bundle_part_no'];
 			hQueryConstructor::markRecordsDeleted($table_name, $primary_key_column, $records);
 		}
-		public function addPartToBundle($part_no, $bundle_no, $type) {
+		public function addPartToBundle($part_num, $bundle_no, $type) {
 			$sql = ' insert into bundle_parts ';
 			$bind_param = new hBindParam();
-			$sql .= ' (part_no, bundle_no, type) values ( ';
+			$sql .= ' (part_num, bundle_no, type) values ( ';
 			
 			$sql .= ' ? ';
-			$bind_param->addNumber($part_no);
+			$bind_param->addString($part_num);
 			$sql .= ' ,? ';
 			$bind_param->addNumber($bundle_no);
 			$sql .= ' ,? ';
@@ -72,8 +72,8 @@
 		public function duplicateBundle($params) {
 			if (isset($params['user_no']) && isset($params['bundle_no'])) {
 				$sql = " 
-				insert into bundles (user_no, bundle_name, bundle_warranty, final_price, deleted, created_date, modified_date)
-					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, final_price, false, now(), now()
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
 						from bundles where user_no = ?
 						and bundle_no = ? 
 						and deleted = false
@@ -83,8 +83,8 @@
 				$bind_param->addNumber($params['bundle_no']);
 				$new_bundle_id = hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 				$sql = "
-					insert into bundle_parts (bundle_no, part_no, type, deleted)
-						select ? , part_no, type, false
+					insert into bundle_parts (bundle_no, part_num, type, deleted)
+						select ? , part_num, type, false
 							from bundle_parts
 							where bundle_no = ?
 							and deleted = false
@@ -109,14 +109,14 @@
 			}
 		}
 		public function updateBundleFinalPrice($params) {
-			if (isset($params['final_price']) && isset($params['bundle_no'])) {
+			if (isset($params['price_adjustment']) && isset($params['bundle_no'])) {
 				$bind_param = new hBindParam();
 				$sql = ' 
 				update bundles 
-				set final_price = ?
+				set price_adjustment = ?
 				where bundle_no = ?
 				';
-				$bind_param->addString($params['final_price']);
+				$bind_param->addString($params['price_adjustment']);
 				$bind_param->addNumber($params['bundle_no']);
 				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
 			}
@@ -126,7 +126,7 @@
 				$bind_param = new hBindParam();
 				$sql = ' 
 				update bundles 
-				set final_price = null
+				set price_adjustment = 0
 				where bundle_no = ?
 				';
 				$bind_param->addNumber($params['bundle_no']);
@@ -164,7 +164,7 @@
 			bundle.bundle_no,
 			bundle.bundle_name,
 			bundle.bundle_warranty,
-			bundle.final_price
+			bundle.price_adjustment
 			';
 			$sql .= '
 			from bundles bundle
@@ -198,7 +198,8 @@
 			bundle.bundle_no,
 			bundle.bundle_name,
 			bundle.bundle_warranty,
-			part.part_no,
+			part.part_num,
+			part.appliance,
 			part_conn.bundle_part_no,
 			part_conn.type,
 			case when part_conn.type = 'primary' then part.price_primary
@@ -211,7 +212,7 @@
 			$sql .= '
 			from bundles bundle
 				left outer join bundle_parts part_conn on part_conn.bundle_no = bundle.bundle_no
-				left outer join parts part on part.part_no = part_conn.part_no
+				left outer join parts part on part.part_num = part_conn.part_num
 				where 1 = 1
 				and bundle.deleted = false
 				and part_conn.deleted = false
@@ -227,10 +228,13 @@
 				$bind_param->addString($params['bundle_no']);
 			}
 			if ($group === true) {
-				$sql .= ' group by part_conn.type, part.part_no, bundle.bundle_no ';
+				$sql .= ' group by part_conn.type, part.part_num, bundle.bundle_no ';
 			}
-			$sql .= ' order by bundle.bundle_no, part_conn.type asc,part.part_no ';
+			$sql .= ' order by bundle.bundle_no, part_conn.type asc,part.part_num ';
 			$results = hQueryConstructor::executeStatement($sql, $bind_param);
+			if (!is_array($results)) {
+				$results = array();
+			}
 			return $results;
 		}
 		public function getCurrUserBundleParts($group = false) {
@@ -264,15 +268,13 @@
 				$output_bundles[$input_bundle['bundle_no']]['bundle_no'] = $input_bundle['bundle_no'];
 				$output_bundles[$input_bundle['bundle_no']]['bundle_name'] = $input_bundle['bundle_name'] ?: 'Bundle';
 				$output_bundles[$input_bundle['bundle_no']]['bundle_warranty'] = $input_bundle['bundle_warranty'];
-				$output_bundles[$input_bundle['bundle_no']]['final_price'] = $input_bundle['final_price'];
+				$output_bundles[$input_bundle['bundle_no']]['price_adjustment'] = $input_bundle['price_adjustment'];
 				$output_bundles[$input_bundle['bundle_no']]['parts'] = array();
+				$output_bundles[$input_bundle['bundle_no']]['parts_by_appliance'] = array();
 				$output_bundles[$input_bundle['bundle_no']]['price'] = 0;
 			}
 			
-			foreach($input_bundles_with_parts as $input_bundle) {
-				$output_bundles[$input_bundle['bundle_no']]['parts'][$input_bundle['bundle_part_no']] = $input_bundle;
-				$output_bundles[$input_bundle['bundle_no']]['price'] += $input_bundle['price'] * $input_bundle['qty'];
-			}
+			$this->addPartsToBundle($output_bundles, $input_bundles_with_parts);
 			
 			foreach($output_bundles as &$bundle) {
 				$p_difference = 1;
@@ -281,11 +283,9 @@
 				$no_parts_flag = count($bundle['parts']) === 0;
 				$modified_price = false;
 				$customer_view = isset($params['customer_view']) && $params['customer_view'] === true;
-				if (empty($bundle['final_price'])) {
-					$bundle['final_price'] = round($bundle['price'], 2);
-				} else {
+				$bundle['final_price'] = round($bundle['price'] + $bundle['price_adjustment'], 2);
+				if ((float)$bundle['price_adjustment'] !== 0.0) {
 					$modified_price = true;
-					$bundle['final_price'] = round($bundle['final_price'], 2);
 					if ($bundle['price'] !== 0) {
 						$p_difference = $bundle['final_price'] / $bundle['price'];
 					} else {
@@ -323,6 +323,32 @@
 			
 			unset($bundle);
 			return $output_bundles;
+		}
+		
+		public function addPartsToBundle(&$bundles, $parts) {
+			foreach($parts as $part) {
+				$this->addPartToFormattedBundle($bundles[$part['bundle_no']], $part);
+			}
+		}
+		
+		public function addPartToFormattedBundle(&$bundle, $part) {
+			$this->addPartToBundleAppliance($bundle['parts_by_appliance'], $part);
+			$bundle['parts'][$part['bundle_part_no']] = $part;
+			$bundle['price'] += $part['price'] * $part['qty'];
+		}
+		
+		public function addPartToBundleAppliance(&$bundle_appliance, $part) {
+			$appliance = $part['appliance'];
+			if (!isset($bundle_appliance[$appliance])) {
+				$bundle_appliance[$appliance] = array();
+				$bundle_appliance[$appliance]['title'] = $appliance;
+				$bundle_appliance[$appliance]['part_names'] = array();
+			}
+			if ($part['qty'] > 1) {
+				$bundle_appliance[$appliance]['part_names'][] = $part['part_description'] . ' x' . $part['qty'];
+			} else {
+				$bundle_appliance[$appliance]['part_names'][] = $part['part_description'];
+			}
 		}
 		
 		public function attemptDeleteBundle($params) {

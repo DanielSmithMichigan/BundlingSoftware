@@ -9,7 +9,9 @@
 			if ($user_obj->checkUserIdentified()) {
 				$this->available_permissions['menu'] = array();
 				$this->available_permissions['menu']['create_bundles'] = true;
+				$this->available_permissions['menu']['manage_observations'] = true;
 				$this->available_permissions['menu']['customer_view'] = true;
+				$this->available_permissions['menu']['update_parts'] = true;
 			} else {
 				$this->available_permissions['menu'] = array();
 				$this->available_permissions['menu']['user_login'] = true;
