@@ -70,6 +70,7 @@
 			hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 		}
 		public function duplicateBundle($params) {
+			asd("BEING CALLED");
 			if (isset($params['user_no']) && isset($params['bundle_no'])) {
 				$sql = " 
 				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
@@ -81,6 +82,8 @@
 				$bind_param = new hBindParam();
 				$bind_param->addNumber($params['user_no']);
 				$bind_param->addNumber($params['bundle_no']);
+				asd($bind_param);
+				asd($sql);
 				$new_bundle_id = hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 				$sql = "
 					insert into bundle_parts (bundle_no, part_num, type, deleted)
@@ -198,7 +201,6 @@
 			bundle.bundle_no,
 			bundle.bundle_name,
 			bundle.bundle_warranty,
-			part.part_num,
 			part.appliance,
 			part_conn.bundle_part_no,
 			part_conn.type,

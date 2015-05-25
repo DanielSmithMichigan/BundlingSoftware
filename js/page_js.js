@@ -225,12 +225,6 @@ $(document).ready(function() {
 			}
 		}.bind(this)});
 	});
-	$(document).on('click', '.duplicate_bundle', function() {
-		var send_data = {};
-		send_data.action = 'duplicate_bundle';
-		send_data.params = getParams(this);
-		sendAjax(send_data, responder_obj);
-	});
 	$(document).on('change', '#file_uploader', function() {
 		var files = event.target.files;
 		var fileData = new FormData();

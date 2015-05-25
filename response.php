@@ -76,6 +76,7 @@
 				$displayer->addGenericCommand('congratulate', array('message' => 'Bundles Deleted'));
 			}
 		case 'duplicate_bundle':
+			asd("RESPONSE");
 			if ($action === 'duplicate_bundle') {
 				$bBundler = hObjectPooler::getObject('bBundler');
 				$bBundler->handleDuplicateBundleResponse($_POST['params']);

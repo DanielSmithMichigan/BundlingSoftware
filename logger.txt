@@ -1,97 +1,153 @@
-DEBUG: 2015-03-29 04:29:25
-bBundler :: handleAddPartResponse :: 4
-Array
+DEBUG: 2015-05-25 03:24:49
+RESPONSE
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 73
+BEING CALLED
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 85
+hBindParam Object
 (
-    [bundle_no] => 1
-    [part_num] => 00013
-    [type] => primary
-)
-
-DEBUG: 2015-03-30 12:48:27
-fObservations :: displayObservations :: 17
-Array
-(
-    [0] => Array
+    [values:hBindParam:private] => Array
         (
-            [observation_no] => 1
-            [user_no] => 1
-            [observation_body] => whatever
-            [deleted] => 0
+            [0] => 1
+            [1] => 23
         )
 
+    [types:hBindParam:private] => ii
 )
 
-DEBUG: 2015-03-30 12:48:41
-fObservations :: displayObservations :: 17
-Array
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 86
+ 
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+						from bundles where user_no = ?
+						and bundle_no = ? 
+						and deleted = false
+				
+DEBUG: 2015-05-25 03:24:49
+RESPONSE
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 73
+BEING CALLED
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 85
+hBindParam Object
 (
-    [0] => Array
+    [values:hBindParam:private] => Array
         (
-            [observation_no] => 1
-            [user_no] => 1
-            [observation_body] => whatever
-            [deleted] => 0
+            [0] => 1
+            [1] => 23
         )
 
+    [types:hBindParam:private] => ii
 )
 
-DEBUG: 2015-03-30 12:56:47
-Array
+DEBUG: 2015-05-25 03:24:49
+bBundler :: duplicateBundle :: 86
+ 
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+						from bundles where user_no = ?
+						and bundle_no = ? 
+						and deleted = false
+				
+DEBUG: 2015-05-25 03:25:03
+RESPONSE
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 73
+BEING CALLED
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 85
+hBindParam Object
 (
-    [action] => add_observation
-    [params] => Array
+    [values:hBindParam:private] => Array
         (
-            [observation] => One Two Three
+            [0] => 1
+            [1] => 23
         )
 
+    [types:hBindParam:private] => ii
 )
 
-DEBUG: 2015-03-30 01:03:25
-Array
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 86
+ 
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+						from bundles where user_no = ?
+						and bundle_no = ? 
+						and deleted = false
+				
+DEBUG: 2015-05-25 03:25:03
+RESPONSE
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 73
+BEING CALLED
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 85
+hBindParam Object
 (
-    [action] => delete_observation
-    [params] => Array
+    [values:hBindParam:private] => Array
         (
-            [undefined] => 2
+            [0] => 1
+            [1] => 23
         )
 
+    [types:hBindParam:private] => ii
 )
 
-DEBUG: 2015-03-30 01:03:37
-Array
+DEBUG: 2015-05-25 03:25:03
+bBundler :: duplicateBundle :: 86
+ 
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+						from bundles where user_no = ?
+						and bundle_no = ? 
+						and deleted = false
+				
+DEBUG: 2015-05-25 03:25:30
+RESPONSE
+DEBUG: 2015-05-25 03:25:32
+RESPONSE
+DEBUG: 2015-05-25 03:25:33
+RESPONSE
+DEBUG: 2015-05-25 03:25:34
+RESPONSE
+DEBUG: 2015-05-25 03:25:35
+RESPONSE
+DEBUG: 2015-05-25 03:25:36
+RESPONSE
+DEBUG: 2015-05-25 03:25:36
+RESPONSE
+DEBUG: 2015-05-25 03:25:37
+RESPONSE
+DEBUG: 2015-05-25 03:25:39
+RESPONSE
+DEBUG: 2015-05-25 03:25:39
+bBundler :: duplicateBundle :: 73
+BEING CALLED
+DEBUG: 2015-05-25 03:25:39
+bBundler :: duplicateBundle :: 85
+hBindParam Object
 (
-    [action] => delete_observation
-    [params] => Array
+    [values:hBindParam:private] => Array
         (
-            [observation_no] => 1
+            [0] => 1
+            [1] => 35
         )
 
+    [types:hBindParam:private] => ii
 )
 
-DEBUG: 2015-03-30 01:22:05
-fCustomerView :: getCustomerViewBundles :: 8
-Array
-(
-    [5] => Array
-        (
-            [bundle_no] => 5
-            [bundle_name] => Bundle
-            [bundle_warranty] => 
-            [price_adjustment] => 0
-            [parts] => Array
-                (
-                )
-
-            [parts_by_appliance] => Array
-                (
-                )
-
-            [price] => 0
-            [final_price] => 0
-            [zero_price_flag] => 
-            [no_parts_flag] => 1
-            [modified_price] => 
-        )
-
-)
-
+DEBUG: 2015-05-25 03:25:39
+bBundler :: duplicateBundle :: 86
+ 
+				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+						from bundles where user_no = ?
+						and bundle_no = ? 
+						and deleted = false
+				
+DEBUG: 2015-05-25 03:25:52
+RESPONSE

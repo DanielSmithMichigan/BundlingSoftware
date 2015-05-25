@@ -42,10 +42,26 @@
 					call_user_func_array(array($query, 'bind_param'), $bind_param->get());
 				}
 				$query->execute();
-				$results = $query -> get_result();
+				
 				if ($mode === 'select') {
-					while ($row = $results -> fetch_assoc()) {
-						$output[] = $row;
+					$fields = array();
+					$meta = $query->result_metadata();
+					
+					while ($field = $meta->fetch_field()) { 
+						$var = $field->name; 
+						$$var = null; 
+						$fields[$var] = &$$var;
+					}
+					
+					call_user_func_array(array($query,'bind_result'),$fields);
+					
+					$i = 0;
+					while ($query->fetch()) {
+						$output[$i] = array();
+						foreach($fields as $k => $v) {
+							$output[$i][$k] = $v;
+						}
+						$i++;
 					}
 				} else if ($mode === 'update') {
 					$output = true;
