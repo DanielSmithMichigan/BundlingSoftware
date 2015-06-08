@@ -1,5 +1,5 @@
 <?php
-	require_once('lib/htmlpurifier/HTMLPurifier.standalone.php');
+	require_once($_SERVER['DOCUMENT_ROOT']."/bundling_software/lib/htmlpurifier/HTMLPurifier.standalone.php");
 	$config = HTMLPurifier_Config::createDefault();
 	$allowed_html = array();
 	$allowed_html[] = 'p';
