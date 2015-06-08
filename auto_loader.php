@@ -7,11 +7,13 @@
 			,'h' => 'helper'
 			,'d' => 'display'
 		);
-		$folder = $folder_location[$first_char];
-		$file_location = $folder.'/'.$class_name . '.php';
-		if (file_exists($file_location)) {
-			require($file_location);
-			return true;
+		if (isset($folder_location[$first_char])) {
+			$folder = $folder_location[$first_char];
+			$file_location = $folder.'/'.$class_name . '.php';
+			if (file_exists($file_location)) {
+				require($file_location);
+				return true;
+			}
 		}
 	}
 ?>

@@ -1,4 +1,4 @@
-<?php 
+<?php 	
 	class bBundler {
 		public function handleAddPartResponse($params) {
 			$part_num = $params['part_num'];
@@ -70,11 +70,10 @@
 			hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 		}
 		public function duplicateBundle($params) {
-			asd("BEING CALLED");
 			if (isset($params['user_no']) && isset($params['bundle_no'])) {
 				$sql = " 
-				insert into bundles (user_no, bundle_name, bundle_warranty, price_adjustment, deleted, created_date, modified_date)
-					select user_no, concat(bundle_name, ' Duplicate'), bundle_warranty, price_adjustment, false, now(), now()
+				insert into bundles (user_no, bundle_name, warranty_parts, description_override, warranty_labor, price_adjustment, deleted, created_date, modified_date)
+					select user_no, concat(bundle_name, ' Duplicate'), warranty_parts, description_override, warranty_labor, price_adjustment, false, now(), now()
 						from bundles where user_no = ?
 						and bundle_no = ? 
 						and deleted = false
@@ -82,8 +81,7 @@
 				$bind_param = new hBindParam();
 				$bind_param->addNumber($params['user_no']);
 				$bind_param->addNumber($params['bundle_no']);
-				asd($bind_param);
-				asd($sql);
+				
 				$new_bundle_id = hQueryConstructor::executeStatement($sql, $bind_param, 'insert');
 				$sql = "
 					insert into bundle_parts (bundle_no, part_num, type, deleted)
@@ -136,12 +134,42 @@
 				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
 			}
 		}
-		public function updateBundleWarranty($params) {
-			if (isset($params['bundle_warranty']) && isset($params['bundle_no'])) {
+		
+		public function saveDescriptionOverride($params) {
+			if (isset($params['bundle_no']) && isset($params['bundle_description'])) {
+				$clean_html = hStringManager::prepareBundleDescription($params['bundle_description']);
 				$bind_param = new hBindParam();
 				$sql = ' 
 				update bundles 
-				set bundle_warranty = ?
+				set description_override = ?
+				where bundle_no = ?
+				';
+				$bind_param->addString($clean_html);
+				$bind_param->addNumber($params['bundle_no']);
+				hQueryConstructor::executeStatement($sql, $bind_param, 'update');
+			}		
+		}
+		public function updateBundleWarranty($params) {
+			$warranty_type = false;
+			
+			if ($params['warranty_type'] === 'parts') {
+				$warranty_type = 'warranty_parts';
+			} else if ($params['warranty_type'] === 'labor') {
+				$warranty_type = 'warranty_labor';
+			}
+			
+			if ($warranty_type && isset($params['bundle_no'])) {
+				$bind_param = new hBindParam();
+				$sql = ' 
+				update bundles ';
+				
+				$sql .= '
+				set ';
+				$sql .= $warranty_type;
+				$sql .= ' = ?
+				';
+				
+				$sql .= '
 				where bundle_no = ?
 				';
 				$bind_param->addString($params['bundle_warranty']);
@@ -166,7 +194,9 @@
 			bundle.user_no,
 			bundle.bundle_no,
 			bundle.bundle_name,
-			bundle.bundle_warranty,
+			bundle.warranty_parts,
+			bundle.warranty_labor,
+			bundle.description_override,
 			bundle.price_adjustment
 			';
 			$sql .= '
@@ -200,7 +230,9 @@
 			$sql .= "
 			bundle.bundle_no,
 			bundle.bundle_name,
-			bundle.bundle_warranty,
+			bundle.warranty_parts,
+			bundle.warranty_labor,
+			bundle.description_override,
 			part.appliance,
 			part_conn.bundle_part_no,
 			part_conn.type,
@@ -259,6 +291,19 @@
 			$params['input_bundles_with_parts'] = $bundle_parts;
 			$params['bundle_skeletons'] = $bundle_skeletons;
 			$bundles = $this->formatBundles($params);
+			if (isset($params['customer_view']) && $params['customer_view'] === true) {
+				$bundles = $this->sortBundlesByPrice($bundles);
+			}
+			return $bundles;
+		}
+		
+		public function sortBundlesByPrice($bundles){
+			usort($bundles, function($a, $b) {
+				if ($a['final_price'] == $b['final_price']) {
+					return 0;
+				}
+				return ($a['final_price'] > $b['final_price'])? -1 : 1;
+			});
 			return $bundles;
 		}
 		public function formatBundles($params) {
@@ -269,7 +314,13 @@
 				$output_bundles[$input_bundle['bundle_no']] = array();
 				$output_bundles[$input_bundle['bundle_no']]['bundle_no'] = $input_bundle['bundle_no'];
 				$output_bundles[$input_bundle['bundle_no']]['bundle_name'] = $input_bundle['bundle_name'] ?: 'Bundle';
-				$output_bundles[$input_bundle['bundle_no']]['bundle_warranty'] = $input_bundle['bundle_warranty'];
+				$output_bundles[$input_bundle['bundle_no']]['warranty_parts'] = $input_bundle['warranty_parts'];
+				$output_bundles[$input_bundle['bundle_no']]['warranty_labor'] = $input_bundle['warranty_labor'];
+				$bundle_description = $input_bundle['description_override'];
+				if (isset($params['customer_view']) && $params['customer_view'] === true) {
+					$bundle_description = hStringManager::convertParagraphToRow($bundle_description);
+				}
+				$output_bundles[$input_bundle['bundle_no']]['description_override'] = $bundle_description;
 				$output_bundles[$input_bundle['bundle_no']]['price_adjustment'] = $input_bundle['price_adjustment'];
 				$output_bundles[$input_bundle['bundle_no']]['parts'] = array();
 				$output_bundles[$input_bundle['bundle_no']]['parts_by_appliance'] = array();

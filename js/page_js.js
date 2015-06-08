@@ -9,6 +9,11 @@ $(document).ready(function() {
 		send_data.user_no = user_no;
 		sendAjax(send_data, responder_obj);
 	});
+	$(document).on('focusin', function(e) {
+		if ($(e.target).closest(".mce-window").length) {
+			e.stopImmediatePropagation();
+		}
+	});
 	$(document).on("click", '.create_bundles', function() {
 		var send_data = {};
 		send_data.action = 'create_bundles';
@@ -133,10 +138,18 @@ $(document).ready(function() {
 		send_data.params = getParams(this);
 		sendAjax(send_data, responder_obj);
 	});
-	$(document).on('click', '.update_warranty', function() {
+	$(document).on('click', '.update_warranty_labor', function() {
 		var send_data = {};
 		send_data.action = 'update_warranty';
 		send_data.params = getParams(this);
+		send_data.params.warranty_type = 'labor';
+		sendAjax(send_data, responder_obj);
+	});
+	$(document).on('click', '.update_warranty_parts', function() {
+		var send_data = {};
+		send_data.action = 'update_warranty';
+		send_data.params = getParams(this);
+		send_data.params.warranty_type = 'parts';
 		sendAjax(send_data, responder_obj);
 	});
 	$(document).on('click', '.hide_menu', function() {
@@ -191,6 +204,35 @@ $(document).ready(function() {
 				return return_val;
 			}
 		}.bind(this)});
+	});
+	$(document).on('click', '.override_description', function() {
+		var params = getParams($(this).parent());
+		var var_name = "#summernote_" + params['bundle_no'];
+		$(var_name).summernote({
+			height: 300,
+			focus: true,
+			toolbar: [
+				['style', ['bold', 'italic', 'underline']],
+				['fontsize', ['fontsize']],
+				['color', ['color']],
+				['para', ['ul', 'ol', 'paragraph']]
+			]
+		});
+		var_name = "#bundle_description_"+params['bundle_no'];
+		$('.summernote').code($('<div/>').html($(var_name).html()).text());
+	});
+	$(document).on('click', '.save_description_override', function() {
+		var params = getParams($(this).closest('.override_header').children('.override_description'));
+		var_name = "#summernote_" + params['bundle_no'];
+		params.bundle_description = $(var_name).code();
+		var send_data = {};
+		send_data.action = 'save_description_override'
+		send_data.params = params;
+		sendAjax(send_data, responder_obj);
+		$('.summernote').destroy();
+	});
+	$(document).on('click', '.destroy_summernote', function() {
+		$('.summernote').destroy();
 	});
 	$(document).on('click', '.remove_price_modification', function() {
 		var send_data = {};
@@ -253,9 +295,9 @@ $(document).ready(function() {
 	$(document).on('click', '.delete_observations', function() {
 		bootbox.confirm("Are you sure you want to delete ALL observations?", function(result) {
 			if (result) {
-		var send_data = {};
-		send_data.action = 'delete_observations';
-		sendAjax(send_data, responder_obj);
+				var send_data = {};
+				send_data.action = 'delete_observations';
+				sendAjax(send_data, responder_obj);
 			}
 		}.bind(this));
 	});

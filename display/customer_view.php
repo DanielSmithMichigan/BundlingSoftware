@@ -16,17 +16,23 @@
 <div class="container">
 	<?php foreach($local_variables['bundles'] as $bundle): ?>
 		<div class="panel panel-default">
-			<nav class="navbar navbar-default">
+			<nav class="navbar navbar-default navbar-condensed">
 				<div class="navbar-header">
-				  <span class="navbar-brand"><?php echo 'Repair Option '.$order_num++; ?></span>
+				  <span class="navbar-brand"><?php echo 'Option '.$order_num++; ?></span>
 				</div>
 			</nav>
-			<table class="table">
+			<table class="table table-condensed"> 
+				<colgroup>
+					<col class="col-xs-1"></col>
+					<col class="col-xs-3"></col>
+					<col class="col-xs-4"></col>
+					<col class="col-xs-3"></col>
+					<col class="col-xs-1"></col>
+				</colgroup>
 				<tr>
 					<th>
 					</th>
 					<th>
-						Appliance
 					</th>
 					<th>
 					</th>
@@ -36,51 +42,89 @@
 					<th>
 					</th>
 				</tr>
-				<?php foreach($bundle['parts_by_appliance'] as $appliance): ?>
-					<tr>
-						<th>
-						</th>
-						<td>
-							<?php echo $appliance['title']; ?>
-						</td>
-						<td>
-							<?php echo join(", ", $appliance['part_names']); ?>
-						</td>
-						<td>
-						</td>
-						<th>
-						</th>
-					</tr>
-				<?php endforeach; ?>
-				<?php if($bundle['no_parts_flag']): ?>
-					<tr>
-						<td>
-						</td>
-						<td>
-							Labor Cost
-						</td>
-						<td>
-						</td>
-						<td class="text-right">
-							$<?php echo $bundle['price_adjustment']; ?>
-						</td>
-						<td>
-						</td>
-					</tr>
+				<?php if (empty($bundle['description_override'])): ?>
+					<?php foreach($bundle['parts_by_appliance'] as $appliance): ?>
+						<tr>
+							<th>
+							</th>
+							<td>
+								<?php echo $appliance['title']; ?>
+							</td>
+							<td>
+								<?php echo join(", ", $appliance['part_names']); ?>
+							</td>
+							<td>
+							</td>
+							<th>
+							</th>
+						</tr>
+					<?php endforeach; ?>
+					<?php if($bundle['no_parts_flag']): ?>
+						<tr>
+							<td>
+							</td>
+							<td>
+								Labor Cost
+							</td>
+							<td>
+							</td>
+							<td class="text-right">
+								$<?php echo $bundle['price_adjustment']; ?>
+							</td>
+							<td>
+							</td>
+						</tr>
+					<?php endif; ?>
+				<?php else: ?>
+					<?php echo $bundle['description_override']; ?>
 				<?php endif; ?>
-				<?php if(!empty($bundle['bundle_warranty'])): ?>
+				<?php if(!empty($bundle['warranty_parts']) && empty($bundle['warranty_labor'])): ?>
 					<tr>
 						<th>
 						</th>
 						<th>
-							Warranty
+							Parts Warranty
 						</th>
 						<th>
 						</th>
 						<th class="text-right">
-							<?php echo $bundle['bundle_warranty']; ?>
+							<?php echo $bundle['warranty_parts']; ?>
 						</th>
 						<th>
+						</th>
+					</tr>
+				<?php endif; ?>
+				<?php if(!empty($bundle['warranty_labor']) && empty($bundle['warranty_parts'])): ?>
+					<tr>
+						<th>
+						</th>
+						<th>
+							Labor Warranty
+						</th>
+						<th>
+						</th>
+						<th class="text-right">
+							<?php echo $bundle['warranty_labor']; ?>
+						</th>
+						<th>
+						</th>
+					</tr>
+				<?php endif; ?>
+				<?php if(!empty($bundle['warranty_labor']) && !empty($bundle['warranty_parts'])): ?>
+					<tr>
+						<th>
+						</th>
+						<th>
+							Parts Warranty: <?php echo $bundle['warranty_parts']; ?>
+						</th>
+						<th>
+							
+						</th>
+						<th class="text-right">
+							Labor Warranty: <?php echo $bundle['warranty_labor']; ?>
+						</th>
+						<th>
+							
 						</th>
 					</tr>
 				<?php endif; ?>

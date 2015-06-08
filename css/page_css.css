@@ -35,6 +35,17 @@
 	display: table;
 }
 
+.navbar.navbar-condensed {
+	margin-bottom: 0px;
+	min-height: 0px;
+}
+
+.navbar.navbar-condensed .navbar-brand {
+	height: auto;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 /** END GENERAL **/
 /** MENU **/
 

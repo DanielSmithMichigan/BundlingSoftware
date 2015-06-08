@@ -1,0 +1,30 @@
+<?php
+require_once('lib/htmlpurifier/HTMLPurifier.standalone.php');
+$config = HTMLPurifier_Config::createDefault();
+$allowed_html = array();
+$allowed_html[] = 'p';
+$allowed_html[] = 'span';
+$allowed_html[] = 'ul';
+$allowed_html[] = 'ol';
+$allowed_html[] = 'li';
+$config->set('HTML.AllowedElements', join(',', $allowed_html));
+$allowed_attributes = array();
+$allowed_attributes[] = 'style';
+$config->set('HTML.AllowedAttributes', join(',', $allowed_attributes));
+$allowed_css = array();
+$allowed_css[] = 'font-size';
+$allowed_css[] = 'font-weight';
+$allowed_css[] = 'font-style';
+$allowed_css[] = 'text-decoration';
+$allowed_css[] = 'color';
+$allowed_css[] = 'background-color';
+$allowed_css[] = 'font-size';
+$allowed_css[] = 'text-align';
+$config->set('CSS.AllowedProperties', join(',', $allowed_css));
+$config->set('Core.EscapeNonASCIICharacters', true);
+$config->set('URI.Disable', true);
+$purifier = new HTMLPurifier($config);
+$dirty_html = '<p style="color: red; font-size: 5pt; font-weight: bold; border: 2px solid red"></p> <a style="color:red;"></a> <ul><li>asd</li><ul>';
+$clean_html = $purifier->purify($dirty_html);
+print_r($clean_html);
+?>

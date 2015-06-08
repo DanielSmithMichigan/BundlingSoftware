@@ -19,7 +19,37 @@
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
 						</div>
 						<span class="typcn typcn-plus"></span>
-						Add or Remove Parts from Bundle
+						Add/Remove Parts
+					</a>
+				</li>
+				<li class="override_header">
+					<a href="#" class="override_description">
+						<div class="params">
+							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
+						</div>
+						<span class="typcn typcn-edit"></span>
+						<span data-toggle="modal" data-target="#modal_<?php echo $bundle['bundle_no']; ?>">Override Description
+						<div class="modal fade" id="modal_<?php echo $bundle['bundle_no']; ?>">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+									 <a class="close destroy_summernote" data-dismiss="modal">×</a>
+									 <h3>Enter your description</h3>
+								 </div>
+								 <div class="modal-body">
+									 <textarea class="summernote" id="summernote_<?php echo $bundle['bundle_no']; ?>">
+										
+									 </textarea>
+									 <textarea id="bundle_description_<?php echo $bundle['bundle_no']; ?>" style="display:none;">
+										<?php echo $bundle['description_override']; ?>
+									 </textarea>
+								 </div>
+								 <div class="modal-footer">
+									 <a href="#" class="save_description_override" data-dismiss="modal">Save</a>
+								 </div>
+								</div>
+							</div>
+						</div>
 					</a>
 				</li>
 				<li>
@@ -28,7 +58,7 @@
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
 						</div>
 						<span class="typcn typcn-tabs-outline"></span>
-						Duplicate Bundle
+						Duplicate
 					</a>
 				</li>
 				<li>
@@ -44,10 +74,10 @@
 				<li role="presentation" class="dropdown alter_title" data-title="Warranty">
 					<a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="true">
 						<span class="change_me">
-							Warranty
+							Parts Warranty
 							<?php 
-								if(!empty($bundle['bundle_warranty'])) {
-									echo ': '.$bundle['bundle_warranty'];
+								if(!empty($bundle['warranty_parts'])) {
+									echo ': '.$bundle['warranty_parts'];
 								}
 							?>
 						</span>
@@ -56,7 +86,33 @@
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 						<?php foreach($local_variables['warranty_options'] as $warranty_option): ?>
 							<li role="presentation">
-								<a role="menuitem" class="update_warranty">
+								<a role="menuitem" class="update_warranty_parts">
+									<div class="params">
+										<input type="hidden" name="bundle_warranty" value="<?php echo $warranty_option; ?>" />
+										<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
+									</div>
+									<?php echo $warranty_option; ?>
+								</a>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</li>
+				<li role="presentation" class="dropdown alter_title" data-title="Warranty">
+					<a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-expanded="true">
+						<span class="change_me">
+							Labor Warranty
+							<?php 
+								if(!empty($bundle['warranty_labor'])) {
+									echo ': '.$bundle['warranty_labor'];
+								}
+							?>
+						</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+						<?php foreach($local_variables['warranty_options'] as $warranty_option): ?>
+							<li role="presentation">
+								<a role="menuitem" class="update_warranty_labor">
 									<div class="params">
 										<input type="hidden" name="bundle_warranty" value="<?php echo $warranty_option; ?>" />
 										<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
@@ -75,7 +131,7 @@
 							<input type="hidden" name="bundle_no" value="<?php echo $bundle['bundle_no']; ?>" />
 						</div>
 						<span class="typcn typcn-trash"></span>
-						Delete Bundle
+						Delete
 					</a>
 				</li>
 			</ul>

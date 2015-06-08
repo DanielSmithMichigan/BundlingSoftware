@@ -5,9 +5,6 @@
 			$params = array();
 			$params['customer_view'] = true;
 			$curr_bundles = $bBundler->getAndFormatCurrUserBundles($params);
-			usort($curr_bundles, function($a, $b) {
-				return ($a['final_price'] - $b['final_price']);
-			});
 			return $curr_bundles;
 		}
 		public function getCustomerViewObservations() {

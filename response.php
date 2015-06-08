@@ -76,7 +76,6 @@
 				$displayer->addGenericCommand('congratulate', array('message' => 'Bundles Deleted'));
 			}
 		case 'duplicate_bundle':
-			asd("RESPONSE");
 			if ($action === 'duplicate_bundle') {
 				$bBundler = hObjectPooler::getObject('bBundler');
 				$bBundler->handleDuplicateBundleResponse($_POST['params']);
@@ -120,6 +119,14 @@
 				$fBundler = hObjectPooler::getObject('fBundler');
 				$fBundler->getAndDisplayCurrUserBundles();
 				$displayer->addGenericCommand('congratulate', array('message' => 'Bundle Warranty Updated'));
+			}		
+		case 'save_description_override':
+			if ($action === 'save_description_override') {
+				$bBundler = hObjectPooler::getObject('bBundler');
+				$bBundler->saveDescriptionOverride($_POST['params']);
+				$fBundler = hObjectPooler::getObject('fBundler');
+				$fBundler->getAndDisplayCurrUserBundles();
+				$displayer->addGenericCommand('congratulate', array('message' => 'Description overridden'));
 			}
 		case 'manage_observations':
 			if ($action === 'manage_observations') {

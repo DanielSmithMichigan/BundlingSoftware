@@ -3,14 +3,8 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="css/typicons.css" />
 		<link rel="stylesheet" type="text/css" href="css/page_css.css" />
-		<script src="js/jquery-2.1.3.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="js/bootbox.js"></script>
-		<script src="js/jquery.bootstrap-growl.js"></script>
-		<script src="js/memory.js"></script>
-		<script src="js/functionTimer.js"></script>
-		<script src="js/page_js.js"></script>
-		<script src="js/responder.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/summernote.css" />
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
 		<!-- __HEAD_CONTENT__ -->
 	</head>
 	<body>
@@ -45,5 +39,14 @@
 				<!-- __PAGE_FOOTER__ -->
 			</div>
 		</div>
+		<script src="js/jquery-2.1.3.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script src="js/bootbox.js"></script>
+		<script src="js/summernote.js"></script>
+		<script src="js/jquery.bootstrap-growl.js"></script>
+		<script src="js/memory.js"></script>
+		<script src="js/functionTimer.js"></script>
+		<script src="js/page_js.js"></script>
+		<script src="js/responder.js"></script>
 	</body>
 </html>
